@@ -15,6 +15,7 @@
 ```text
 huerto-hogar/
 ├── index.html
+├── .Rhistory
 ├── style.css
 ├── function.js
 └── README.md
