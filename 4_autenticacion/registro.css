@@ -1,0 +1,14 @@
+
+.card-auth {
+    border-radius: 12px;
+}
+
+.nav-pills .nav-link {
+    color: var(--gris-oscuro);
+    font-weight: 600;
+}
+
+.nav-pills .nav-link.active {
+    background-color: var(--verde-esmeralda) !important;
+    color: white !important;
+}
