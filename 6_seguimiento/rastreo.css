@@ -1,0 +1,51 @@
+
+.pasos-container {
+    position: relative;
+}
+
+/* Línea gris de fondo que atraviesa todos los pasos */
+.pasos-container::before {
+    content: "";
+    position: absolute;
+    top: 18px; /* alinea con el centro del círculo de 36px */
+    left: 5%;
+    right: 5%;
+    height: 3px;
+    background-color: #e0e0e0;
+    z-index: 1;
+}
+
+.paso-seguimiento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.circulo-paso {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: var(--gris-medio);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+/* Paso ya alcanzado por el pedido: se pinta de verde */
+.paso-seguimiento.completado .circulo-paso {
+    background-color: var(--verde-esmeralda);
+    color: white;
+}
+
+.paso-seguimiento.completado p {
+    color: var(--gris-oscuro);
+    font-weight: 600;
+}
