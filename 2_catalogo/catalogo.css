@@ -1,0 +1,19 @@
+.grid-productos .card-img-top {
+    height: 180px;
+    object-fit: cover;
+}
+
+.tarjeta-producto .card-text.fw-semibold {
+    margin-top: auto;
+    margin-bottom: 0.75rem;
+    color: var(--verde-esmeralda);
+}
+
+#buscador-productos:focus {
+    border-color: var(--verde-esmeralda);
+    box-shadow: 0 0 0 0.2rem rgba(46, 139, 87, 0.25);
+}
+
+.filtros-categoria.flex-wrap .btn {
+    margin-bottom: 0.4rem;
+}
