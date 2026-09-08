@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio - HuertoHogar</title>
+    <title>Catálogo - HuertoHogar</title>
+
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../7_comunes/global.css">
-    <link rel="stylesheet" href="index.css">
 
+    
+    <link rel="stylesheet" href="../7_comunes/global.css">
+    <link rel="stylesheet" href="catalogo.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
-    <!-- menu de navegacion -->
+
+    <!-- FIX header-->
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
             <div class="container">
@@ -25,12 +29,11 @@
                 <div class="collapse navbar-collapse" id="menuNavegacion">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="../1_inicio/index.html">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../2_catalogo/catalogo.html">Catalogo</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="../2_catalogo/catalogo.html">Catálogo</a></li>
                         <li class="nav-item"><a class="nav-link" href="../6_seguimiento/rastreo.html">Seguimiento</a></li>
                     </ul>
                     <div class="d-flex gap-2">
                         <a href="../4_autenticacion/registro.html" class="btn btn-outline-success">Mi Cuenta</a>
-                        <!-- boton del carrito de compras con contador dinamico js KU -->
                         <a href="../3_carrito/carrito.html" class="btn btn-warning">
                             Carrito <span class="badge bg-dark ms-1" id="contador-carrito">0</span>
                         </a>
@@ -40,48 +43,48 @@
         </nav>
     </header>
 
-    <!-- MAIN CONTENEDOR DINAMICO -->
+    <!-- CONTENEDOR DEL CATÁLOGO -->
     <main class="container my-5 flex-grow-1">
+        <div class="text-center mb-5">
+            <h2 class="font-playfair">Nuestro Catálogo</h2>
+            <p class="text-secondary">Productos frescos, directo desde el campo hasta tu mesa.</p>
+        </div>
 
-            <section class="hero-section text-center p-5 mb-5 rounded-4 shadow-sm bg-light">
-                
-                    <div class="col-lg-8 col-md-8 mx-auto">
-                        <h1 class="fw-bold text-success mb-3" style="font-family: 'Playfair Display', serif;">Del campo a tu deleite</h1>
-                        <p class="lead text-muted mb-4">En HuertoHogar apoyamos la cultura local y cuidamos la salud de tu familia. Cultivamos con amor, cosechamos con cuidado. Descubre la mejor seleccion de productos directo de granjas locales a tu mesa.</p>
-                        <!-- btn catalogo -->
-                        <a href="../2_catalogo/catalogo.html" class="btn btn-success btn-lg px-4 rounded-pill shadow-sm">Ir al Catálogo</a>
+        <div class="row mb-4 g-3 align-items-center">
+            <div class="col-md-5">
+                <input
+                    type="text"
+                    id="buscador-productos"
+                    class="form-control"
+                    placeholder="Buscar producto... (ej: manzanas)"
+                    oninput="buscarProductos(this.value)">
+            </div>
 
-                    </div>
-                
-            </section>
+            <div class="col-md-7 text-md-end">
+                <div class="btn-group flex-wrap" role="group">
+                    <button class="btn btn-outline-success active" onclick="filtrarPorCategoria('todos')">Todos</button>
+                    <button class="btn btn-outline-success" onclick="filtrarPorCategoria('frutas')">Frutas Frescas</button>
+                    <button class="btn btn-outline-success" onclick="filtrarPorCategoria('verduras')">Verduras Orgánicas</button>
+                    <button class="btn btn-outline-success" onclick="filtrarPorCategoria('organicos')">Productos Orgánicos</button>
+                    <button class="btn btn-outline-success" onclick="filtrarPorCategoria('lacteos')">Productos Lácteos</button>
+                </div>
+            </div>
+        </div>
 
-
-        <div class="mb-4 text-center">
-            <h2 class="fw-bold mb-3 border-bottom pb-2 d-inline-block">Productos destacados</h2>
-
-
-        <!-- contenedor js     -->
-        </div>    
-        <div class="grid-productos row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4"></div>
-
-
-
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 grid-productos">
+        </div>
+    </main>
 
     
-    </main>    
     <footer class="bg-dark text-light py-4 mt-auto">
         <div class="container text-center">
             <p>&copy; 2026 HuertoHogar - PROYECTO DSY 1104. Todos los derechos reservados.</p>
             <p>Desarrollado por el equipo TRAIGANMEN AL JSON.</p>
         </div>
     </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../7_comunes/datos.js"></script>    
-    <script src="index.js"></script>
-    
-
-
-    
-    
+    <script src="../7_comunes/datos.js"></script>
+    <script src="catalogo.js"></script>
 </body>
 </html>
