@@ -1,11 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Catalogo de Productos-HuertoHogar</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="catalogo.css">
 </head>
+
 <body>
-    
+    <header>
+        <div class="logo">
+            <h1>HuertoHogar</h1>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li> <a href="index.html">Inicio</a></li>
+            <li><a href="catalogo.html" class="active">Catalogo</a></li>
+            <li>
+                <a href="carrito.html">
+                    Carrito <span class="contador-carrito">0</span>
+                </a>
+            </li>
+            <li><a href="nosotros.html">Nosotros</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="registro.html">Registro / Mi Perfil</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section class="encabezado-catalogo">
+            <h2>Nuestro catalogo</h2>
+            <p>Productos frescos, directo desde el campo hasta tu mesa.</p>
+        </section>
+
+        <section class="controles-catalogo">
+            <div class="buscador">
+                <input type="text" id="buscador-productos" placeholder="Buscar producto..."
+                    oninput="buscarProductos(this.value)">
+            </div>
+        </section>
+    </main>
+
+    <div class="filtros-categoria">
+        <button class="btn-filtro active" onclick="filtrarPorCategoria('todos')">
+            Todos
+        </button>
+        <button class="btn-filtro" onclick="filtrarPorCategoria('frutas')">
+            Frutas Frescas
+        </button>
+        <button class="btn-filtro" onclick="filtrarPorCategoria('verduras')">
+            Verduras Orgánicas
+        </button>
+        <button class="btn-filtro" onclick="filtrarPorCategoria('organicos')">
+            Productos Orgánicos
+        </button>
+        <button class="btn-filtro" onclick="filtrarPorCategoria('lacteos')">
+            Productos Lácteos
+        </button>
+    </div>
+    </section>
+
+    <section class="grid-productos">
+    </section>
+
+    <footer>
+        <p>&copy; 2026 HuertoHogar. Todos los derechos reservados.</p>
+    </footer>
+
+
+
+    <script src="datos.js"></script>
+    <script src="catalogo.js"></script>
 </body>
+
 </html>
