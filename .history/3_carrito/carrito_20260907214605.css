@@ -17,22 +17,13 @@
     font-weight: 700;
     color: #2e8b57; /* Verde esmeralda */
     
-}
+
 /* dimenciones miniaturas productos */
 .img-carrito{
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     object-fit: cover;
     border-radius: 6px;
     border: 1px solid #eaeaea;
 
-}
-
-.btn-eliminar{ 
-    width: 35px;
-    height: 35px;
-    padding: 0;
-    display: 	flex;
-    align-items: center;
-    justify-content: center;
 }
