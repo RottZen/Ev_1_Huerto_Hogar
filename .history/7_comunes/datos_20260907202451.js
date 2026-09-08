@@ -130,7 +130,7 @@ function agregarAlCarrito(codProducto,cantidad = 1) {
             "cantidad" : cantidad
         });
     }
-    guardarCarrito(carrito)
+    guardarCarrito()
 }
 
 function eliminarDelCarrito(codProducto) {
@@ -157,7 +157,7 @@ function calcularTotalCarrito() {
 }
 
 function actualizarContadorCarrito() {
-    const contador = document.querySelector("#contador-carrito");
+    const contador = document.querySelector(".contador-carrito");
     if (!contador) {
         return;
     }
@@ -180,7 +180,7 @@ function renderizarProductos(listaProductos = productos) {
             <h3>${producto.nombre}</h3>
             <p class="origen">${producto.origen}</p>
             <p class="precio">$${producto.precio.toLocaleString("es-CL")} / ${producto.unidad}</p>
-            <button class="btn" onclick="agregarAlCarrito('${producto.Codigo}')">Agregar al carrito</button>
+            <button class="btn" onclick="agregarAlCarrito(${producto.Codigo})">Agregar al carrito</button>
         `;
         contenedor.appendChild(tarjeta);
     });
@@ -197,47 +197,32 @@ function filtrarPorCategoria(categoria) {
  
 // Dibuja el contenido del carrito en carrito.html
 function renderizarCarrito() {
-    const contenedor = document.querySelector("#tabla-carrito");
+    const contenedor = document.querySelector(".lista-carrito");
     if (!contenedor) return;
  
     const carrito = obtenerCarrito();
     contenedor.innerHTML = "";
  
     if (carrito.length === 0) {
-        contenedor.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">El carrito está vacío</td></tr>';
+        contenedor.innerHTML = "<p>Tu carrito está vacío.</p>";
     } else {
         carrito.forEach(item => {
-            const fila = document.createElement("tr");
+            const fila = document.createElement("div");
             fila.classList.add("item-carrito");
             fila.innerHTML = `
-                <td class="d-flex align-items-center">
-                    <img src="${item.imagen}" alt="${item.nombre}" style="width : 50px; height: 50px; object-fit: cover;" class= "rounded me-2">
-                    <span>${item.nombre}</span>
-                </td>  
-                <td>$${item.precio.toLocaleString("es-CL")}</td>
-                <td>  
-                    <input type="number" class="form-control form-control-sm" style="width: 70px;" min="1" value="${item.cantidad}"
-                        onchange="actualizarCantidad('${item.Codigo}', parseInt(this.value))">
-
-                </td>
-                <td>
-                    <span class="fw-bold text-success ms-2">
-                    $${(item.precio * item.cantidad).toLocaleString("es-CL")}</span>
-                </td>
-                <td>    
-                    <button class="btn btn-danger btn-sm" onclick="eliminarDelCarrito('${item.Codigo}')">Eliminar</button>
-                </td>    
-                `;
-                contenedor.appendChild(fila);
-            });
-        }
-    
-    const totalElemento = document.querySelector("#total-carrito");
-    const subtotalElemento = document.querySelector("#subtotal-carrito");
-
-    if (totalElemento && subtotalElemento) {
-        const totalCalculado = calcularTotalCarrito().toLocaleString("es-CL");
-        subtotalElemento.textContent = `Subtotal: $${totalCalculado} CLP`;  
+                <img src="${item.imagen}" alt="${item.nombre}">
+                <span>${item.nombre}</span>
+                <input type="number" min="1" value="${item.cantidad}"
+                    onchange="actualizarCantidad(${item.Codigo}, parseInt(this.value))">
+                <span>$${(item.precio * item.cantidad).toLocaleString("es-CL")}</span>
+                <button onclick="eliminarDelCarrito(${item.Codigo})">Eliminar</button>
+            `;
+            contenedor.appendChild(fila);
+        });
+    }
+ 
+    const totalElemento = document.querySelector(".total-carrito");
+    if (totalElemento) {
         totalElemento.textContent = `Total: $${calcularTotalCarrito().toLocaleString("es-CL")}`;
     }
 }

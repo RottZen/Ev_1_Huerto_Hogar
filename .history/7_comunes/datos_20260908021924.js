@@ -218,9 +218,6 @@ function renderizarCarrito() {
                 <td>  
                     <input type="number" class="form-control form-control-sm" style="width: 70px;" min="1" value="${item.cantidad}"
                         onchange="actualizarCantidad('${item.Codigo}', parseInt(this.value))">
-
-                </td>
-                <td>
                     <span class="fw-bold text-success ms-2">
                     $${(item.precio * item.cantidad).toLocaleString("es-CL")}</span>
                 </td>

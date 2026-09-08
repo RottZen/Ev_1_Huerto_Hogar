@@ -204,7 +204,7 @@ function renderizarCarrito() {
     contenedor.innerHTML = "";
  
     if (carrito.length === 0) {
-        contenedor.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">El carrito está vacío</td></tr>';
+        contenedor.innerHTML = 'tr><td colspan="5" class="text-center py-4 text-muted">El carrito está vacío</td></tr>';
     } else {
         carrito.forEach(item => {
             const fila = document.createElement("tr");
@@ -216,11 +216,8 @@ function renderizarCarrito() {
                 </td>  
                 <td>$${item.precio.toLocaleString("es-CL")}</td>
                 <td>  
-                    <input type="number" class="form-control form-control-sm" style="width: 70px;" min="1" value="${item.cantidad}"
+                    <input type="number" class="form-control form-control-sm" style:"width: 70px;" min="1" value="${item.cantidad}"
                         onchange="actualizarCantidad('${item.Codigo}', parseInt(this.value))">
-
-                </td>
-                <td>
                     <span class="fw-bold text-success ms-2">
                     $${(item.precio * item.cantidad).toLocaleString("es-CL")}</span>
                 </td>

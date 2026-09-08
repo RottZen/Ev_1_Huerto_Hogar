@@ -204,7 +204,7 @@ function renderizarCarrito() {
     contenedor.innerHTML = "";
  
     if (carrito.length === 0) {
-        contenedor.innerHTML = '<tr><td colspan="5" class="text-center py-4 text-muted">El carrito está vacío</td></tr>';
+        contenedor.innerHTML = 'tr><td colspan="5" class="text-center py-4 text-muted">El carrito está vacío</td></tr>';
     } else {
         carrito.forEach(item => {
             const fila = document.createElement("tr");
@@ -216,28 +216,20 @@ function renderizarCarrito() {
                 </td>  
                 <td>$${item.precio.toLocaleString("es-CL")}</td>
                 <td>  
-                    <input type="number" class="form-control form-control-sm" style="width: 70px;" min="1" value="${item.cantidad}"
+                    <input type="number" class="form-control form-control-sm" style:"width: 70px;" min="1" value="${item.cantidad}"
                         onchange="actualizarCantidad('${item.Codigo}', parseInt(this.value))">
-
-                </td>
-                <td>
-                    <span class="fw-bold text-success ms-2">
+                    <span class="fw-bold textsuccess ms-2">
                     $${(item.precio * item.cantidad).toLocaleString("es-CL")}</span>
                 </td>
-                <td>    
-                    <button class="btn btn-danger btn-sm" onclick="eliminarDelCarrito('${item.Codigo}')">Eliminar</button>
-                </td>    
+                    
+                    <button onclick="eliminarDelCarrito('${item.Codigo}')">Eliminar</button>
                 `;
                 contenedor.appendChild(fila);
             });
         }
     
-    const totalElemento = document.querySelector("#total-carrito");
-    const subtotalElemento = document.querySelector("#subtotal-carrito");
-
-    if (totalElemento && subtotalElemento) {
-        const totalCalculado = calcularTotalCarrito().toLocaleString("es-CL");
-        subtotalElemento.textContent = `Subtotal: $${totalCalculado} CLP`;  
+    const totalElemento = document.querySelector(".total-carrito");
+    if (totalElemento) {
         totalElemento.textContent = `Total: $${calcularTotalCarrito().toLocaleString("es-CL")}`;
     }
 }
