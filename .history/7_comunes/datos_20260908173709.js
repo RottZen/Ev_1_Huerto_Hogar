@@ -16,7 +16,7 @@ const productos = [
         "categoria": "frutas",
         "precio": 1000,
         "unidad": "kg",
-        "imagen": "../assets/img/naranjas-valencia.jpg",
+        "imagen": "../assets/img/naranja-valencia.jpg",
         "descripcion": "Jugosas y ricas en vitamina C, ideales para zumos frescos y refrescantes.",
         "origen": "Chile",
         "stock": 200
@@ -27,7 +27,7 @@ const productos = [
         "categoria": "frutas",
         "precio": 800,
         "unidad": "kg",
-        "imagen": "../assets/img/platanos-cavendish.jpg",
+        "imagen": "../asset/img/platanos-cavendish.jpg",
         "descripcion": "Plátanos maduros y dulces, perfectos para el desayuno o como snack energético.",
         "origen": "Chile",
         "stock": 250
@@ -38,7 +38,7 @@ const productos = [
         "categoria": "verduras",
         "precio": 900,
         "unidad": "kg",
-        "imagen": "../assets/img/zanahorias-organicas.jpg",
+        "imagen": "../img/zanahorias-organicas.jpg",
         "descripcion": "Zanahorias crujientes cultivadas sin pesticidas. Excelente fuente de vitamina A y fibra.",
         "origen": "Región de O'Higgins",
         "stock": 100
@@ -49,7 +49,7 @@ const productos = [
         "categoria": "verduras",
         "precio": 700,
         "unidad": "bolsa 500g",
-        "imagen": "../assets/img/espinacas-frescas.jpg",
+        "imagen": "../img/espinacas-frescas.jpg",
         "descripcion": "Espinacas frescas y nutritivas, perfectas para ensaladas y batidos verdes.",
         "origen": "Chile",
         "stock": 80
@@ -60,7 +60,7 @@ const productos = [
         "categoria": "verduras",
         "precio": 1500,
         "unidad": "kg",
-        "imagen": "../assets/img/pimientos-tricolores.jpg",
+        "imagen": "../img/pimientos-tricolores.jpg",
         "descripcion": "Pimientos rojos, amarillos y verdes, ideales para salteados y platos coloridos.",
         "origen": "Chile",
         "stock": 120
@@ -71,7 +71,7 @@ const productos = [
         "categoria": "organicos",
         "precio": 5000,
         "unidad": "frasco 500g",
-        "imagen": "../assets/img/miel-organica.jpg",
+        "imagen": "../img/miel-organica.jpg",
         "descripcion": "Miel pura y orgánica producida por apicultores locales. Rica en antioxidantes y con un sabor inigualable.",
         "origen": "Región de La Araucanía",
         "stock": 50
@@ -82,7 +82,7 @@ const productos = [
         "categoria": "organicos",
         "precio": 3200,
         "unidad": "bolsa 1kg",
-        "imagen": "../assets/img/quinua-organica.jpg",
+        "imagen": "../img/quinua-organica.jpg",
         "descripcion": "Quinua orgánica, alta en proteínas y libre de gluten, ideal para una alimentación saludable.",
         "origen": "Chile",
         "stock": 35
@@ -93,7 +93,7 @@ const productos = [
         "categoria": "lacteos",
         "precio": 1100,
         "unidad": "litro",
-        "imagen": "../assets/img/leche-entera.jpg",
+        "imagen": "../img/leche-entera.jpg",
         "descripcion": "Leche entera proveniente de granjas locales, rica en calcio y nutrientes esenciales.",
         "origen": "Chile",
         "stock": 90

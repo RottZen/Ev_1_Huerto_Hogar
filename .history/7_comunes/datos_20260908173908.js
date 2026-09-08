@@ -16,7 +16,7 @@ const productos = [
         "categoria": "frutas",
         "precio": 1000,
         "unidad": "kg",
-        "imagen": "../assets/img/naranjas-valencia.jpg",
+        "imagen": "../assets/img/naranja-valencia.jpg",
         "descripcion": "Jugosas y ricas en vitamina C, ideales para zumos frescos y refrescantes.",
         "origen": "Chile",
         "stock": 200
@@ -27,7 +27,7 @@ const productos = [
         "categoria": "frutas",
         "precio": 800,
         "unidad": "kg",
-        "imagen": "../assets/img/platanos-cavendish.jpg",
+        "imagen": "../asset/img/platanos-cavendish.jpg",
         "descripcion": "Plátanos maduros y dulces, perfectos para el desayuno o como snack energético.",
         "origen": "Chile",
         "stock": 250

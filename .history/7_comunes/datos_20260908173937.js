@@ -27,7 +27,7 @@ const productos = [
         "categoria": "frutas",
         "precio": 800,
         "unidad": "kg",
-        "imagen": "../assets/img/platanos-cavendish.jpg",
+        "imagen": "../asset/img/platanos-cavendish.jpg",
         "descripcion": "Plátanos maduros y dulces, perfectos para el desayuno o como snack energético.",
         "origen": "Chile",
         "stock": 250

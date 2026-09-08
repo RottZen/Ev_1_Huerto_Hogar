@@ -5,7 +5,7 @@ const productos = [
         "categoria": "frutas",
         "precio": 1200,
         "unidad": "kg",
-        "imagen": "../assets/img/manzana-fuji.jpg",
+        "imagen": "../img/manzanas-fuji.jpg",
         "descripcion": "Jugosas y ricas en vitamina C, ideales para zumos frescos y refrescantes.",
         "origen": "Chile",
         "stock": 200
@@ -16,7 +16,7 @@ const productos = [
         "categoria": "frutas",
         "precio": 1000,
         "unidad": "kg",
-        "imagen": "../assets/img/naranjas-valencia.jpg",
+        "imagen": "../img/naranjas-valencia.jpg",
         "descripcion": "Jugosas y ricas en vitamina C, ideales para zumos frescos y refrescantes.",
         "origen": "Chile",
         "stock": 200
@@ -27,7 +27,7 @@ const productos = [
         "categoria": "frutas",
         "precio": 800,
         "unidad": "kg",
-        "imagen": "../assets/img/platanos-cavendish.jpg",
+        "imagen": "../img/platanos-cavendish.jpg",
         "descripcion": "Plátanos maduros y dulces, perfectos para el desayuno o como snack energético.",
         "origen": "Chile",
         "stock": 250
@@ -38,7 +38,7 @@ const productos = [
         "categoria": "verduras",
         "precio": 900,
         "unidad": "kg",
-        "imagen": "../assets/img/zanahorias-organicas.jpg",
+        "imagen": "../img/zanahorias-organicas.jpg",
         "descripcion": "Zanahorias crujientes cultivadas sin pesticidas. Excelente fuente de vitamina A y fibra.",
         "origen": "Región de O'Higgins",
         "stock": 100
@@ -49,7 +49,7 @@ const productos = [
         "categoria": "verduras",
         "precio": 700,
         "unidad": "bolsa 500g",
-        "imagen": "../assets/img/espinacas-frescas.jpg",
+        "imagen": "../img/espinacas-frescas.jpg",
         "descripcion": "Espinacas frescas y nutritivas, perfectas para ensaladas y batidos verdes.",
         "origen": "Chile",
         "stock": 80
@@ -60,7 +60,7 @@ const productos = [
         "categoria": "verduras",
         "precio": 1500,
         "unidad": "kg",
-        "imagen": "../assets/img/pimientos-tricolores.jpg",
+        "imagen": "../img/pimientos-tricolores.jpg",
         "descripcion": "Pimientos rojos, amarillos y verdes, ideales para salteados y platos coloridos.",
         "origen": "Chile",
         "stock": 120
@@ -71,7 +71,7 @@ const productos = [
         "categoria": "organicos",
         "precio": 5000,
         "unidad": "frasco 500g",
-        "imagen": "../assets/img/miel-organica.jpg",
+        "imagen": "../img/miel-organica.jpg",
         "descripcion": "Miel pura y orgánica producida por apicultores locales. Rica en antioxidantes y con un sabor inigualable.",
         "origen": "Región de La Araucanía",
         "stock": 50
@@ -82,7 +82,7 @@ const productos = [
         "categoria": "organicos",
         "precio": 3200,
         "unidad": "bolsa 1kg",
-        "imagen": "../assets/img/quinua-organica.jpg",
+        "imagen": "../img/quinua-organica.jpg",
         "descripcion": "Quinua orgánica, alta en proteínas y libre de gluten, ideal para una alimentación saludable.",
         "origen": "Chile",
         "stock": 35
@@ -93,7 +93,7 @@ const productos = [
         "categoria": "lacteos",
         "precio": 1100,
         "unidad": "litro",
-        "imagen": "../assets/img/leche-entera.jpg",
+        "imagen": "../img/leche-entera.jpg",
         "descripcion": "Leche entera proveniente de granjas locales, rica en calcio y nutrientes esenciales.",
         "origen": "Chile",
         "stock": 90
@@ -175,17 +175,18 @@ function renderizarProductos(listaProductos = productos) {
     listaProductos.forEach(producto => {
         const tarjeta = document.createElement("article");
         tarjeta.className = "col-12 col-md-6 col-lg-4 mb-4"; // Clases de grilla Bootstrap
-        tarjeta.innerHTML = `
-            <div class="card h-100 shadow-sm">
-                <img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}" style="height: 200px; object-fit: cover;">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title text-success">${producto.nombre}</h5>
-                    <p class="text-muted small mb-2">${producto.origen}</p>
-                    <p class="fs-5 fw-bold mb-3">$${producto.precio.toLocaleString("es-CL")} <span class="fs-6 fw-normal text-secondary">/ ${producto.unidad}</span></p>
-                    <button class="btn btn-outline-success mt-auto w-100" onclick="agregarAlCarrito('${producto.Codigo}')">Agregar al carrito</button>
-                </div>
-            </div>
-        `;
+tarjeta.innerHTML = `
+    <div class="card h-100 shadow-sm">
+        <!-- Revisa que la ruta de la imagen sea correcta -->
+        <img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}" style="height: 200px; object-fit: cover;">
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title text-success">${producto.nombre}</h5>
+            <p class="text-muted small mb-2">${producto.origen}</p>
+            <p class="fs-5 fw-bold mb-3">$${producto.precio.toLocaleString("es-CL")} <span class="fs-6 fw-normal text-secondary">/ ${producto.unidad}</span></p>
+            <button class="btn btn-outline-success mt-auto w-100" onclick="agregarAlCarrito('${producto.Codigo}')">Agregar al carrito</button>
+        </div>
+    </div>
+`;
         contenedor.appendChild(tarjeta);
     });
 }
@@ -241,8 +242,8 @@ function renderizarCarrito() {
 
     if (totalElemento && subtotalElemento) {
         const totalCalculado = calcularTotalCarrito().toLocaleString("es-CL");
-        subtotalElemento.textContent = `$${totalCalculado} CLP`;  
-        totalElemento.textContent = `$${calcularTotalCarrito().toLocaleString("es-CL")}`;
+        subtotalElemento.textContent = `Subtotal: $${totalCalculado} CLP`;  
+        totalElemento.textContent = `Total: $${calcularTotalCarrito().toLocaleString("es-CL")}`;
     }
 }
 
