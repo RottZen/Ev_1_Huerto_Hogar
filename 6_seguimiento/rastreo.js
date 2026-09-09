@@ -1,12 +1,4 @@
-/* ============================================================
-   HuertoHogar - rastreo.js
-   Lógica específica de la página rastreo.html.
-   No hay backend real, así que simulamos un pequeño set de
-   pedidos de ejemplo (mismo patrón que "productos" en datos.js).
-   ============================================================ */
 
-// Pedidos de ejemplo. "estado" es el índice (0 a 3) del arreglo
-// ESTADOS de más abajo: en qué paso de la línea de tiempo está.
 const pedidos = [
     {
         codigo: "HH-1001",
@@ -30,7 +22,6 @@ const pedidos = [
 
 const ESTADOS = ["Pedido Confirmado", "En Preparación", "En Camino", "Entregado"];
 
-// Busca el pedido escrito por el usuario y dibuja el resultado
 function buscarPedido() {
     const input = document.getElementById("input-codigo-pedido");
     const codigo = input.value.trim().toUpperCase();
@@ -101,9 +92,6 @@ function guardarFechaPreferida() {
     alert(`Guardamos tu fecha de entrega preferida: ${formatearFecha(input.value)}`);
 }
 
-/* ------------------------------------------------------------
-   Inicialización de esta página
-   ------------------------------------------------------------ */
 document.addEventListener("DOMContentLoaded", () => {
     const botonBuscar = document.getElementById("btn-buscar-pedido");
     if (botonBuscar) botonBuscar.addEventListener("click", buscarPedido);
