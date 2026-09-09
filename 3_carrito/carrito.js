@@ -50,7 +50,8 @@ function actualizarTotales() {
 
     document.getElementById("total-carrito").textContent =
         `$${total.toLocaleString("es-CL")} CLP`;
-    //FIX DEL CONTADOR DEL CARRITO EN EL HEADER
+
+    // FIX DEL CONTADOR DEL CARRITO EN EL HEADER
     const carrito = obtenerCarrito();
     const cantidadTotal = carrito.reduce((acc, item) => acc + item.cantidad, 0);
     const badgeHeader = document.getElementById("contador-carrito");
@@ -75,6 +76,50 @@ function quitarProducto(codProducto) {
     renderizarTablaCarrito();
 }
 
+// Guarda la orden en el historial de perfil del usuario
+function registrarCompraEnHistorial(totalCompra) {
+    let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
+
+    // Si no existiera sesión previa, creamos un perfil base activo
+    if (!usuario) {
+        usuario = {
+            nombre: "Juan Pérez",
+            email: "juan.perez@email.cl",
+            telefono: "+56 9 8765 4321",
+            direccion: "Av. Vicuña Mackenna 4860, San Joaquín",
+            ciudad: "Santiago",
+            puntos: 0,
+            sesionActiva: true,
+            historialCompras: []
+        };
+    }
+
+    if (!usuario.historialCompras) {
+        usuario.historialCompras = [];
+    }
+
+    // Crear el número de orden y fecha
+    const numeroPedido = "#HH-" + Math.floor(1000 + Math.random() * 9000);
+    const fechaActual = new Date().toLocaleDateString('es-CL');
+
+    const nuevaOrden = {
+        id: numeroPedido,
+        fecha: fechaActual,
+        total: `$${totalCompra.toLocaleString('es-CL')} CLP`,
+        estado: "En Preparación"
+    };
+
+    // Agregar la compra al principio del historial
+    usuario.historialCompras.unshift(nuevaOrden);
+
+    // Sumar 10% del total de la compra en HuertoPuntos
+    const puntosGanados = Math.floor(totalCompra * 0.1);
+    usuario.puntos = (usuario.puntos || 0) + puntosGanados;
+
+    // Guardar cambios en el localStorage
+    localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
+}
+
 function confirmarPedido() {
     const carrito = obtenerCarrito();
 
@@ -83,10 +128,14 @@ function confirmarPedido() {
         return;
     }
 
-    // Aquí, más adelante, iría la lógica real de checkout
-    // (guardar el pedido, generar boleta, redirigir, etc.)
-    alert("¡Pedido confirmado! Gracias por tu compra en HuertoHogar.");
+    const totalCompra = calcularTotalCarrito();
 
+    // Guardar pedido en el perfil del usuario activo
+    registrarCompraEnHistorial(totalCompra);
+
+    alert("¡Pedido confirmado! Gracias por tu compra en HuertoHogar. Puedes revisar el estado de tu pedido en tu Cuenta.");
+
+    // Vaciar el carrito y re-renderizar
     localStorage.removeItem("carritoHuertoHogar");
     renderizarTablaCarrito();
 }
