@@ -1,4 +1,4 @@
-/* limite radio y ancho del ctrl cantidad  */
+
 .input-cantidad {
   max-width: 80px;
   text-align: center;
@@ -6,19 +6,19 @@
   border-radius: 4px;
   padding: 5px;
 }
-/* efecto cursor sobre products */
+
 #tabla-carrito tr:hover{
-    background-color: rgba(46, 139, 87, 0.05); /* Verde esmeralda bn suave */
+    background-color: rgba(46, 139, 87, 0.05); 
     transition: background-color 0.2s ease-in-out;
 
 }
-/* resaltar total */
+
 #total-carrito{
     font-weight: 700;
-    color: #2e8b57; /* Verde esmeralda */
+    color: #2e8b57; 
     
 }
-/* dimenciones miniaturas productos */
+
 .img-carrito{
     width: 60px;
     height: 60px;
