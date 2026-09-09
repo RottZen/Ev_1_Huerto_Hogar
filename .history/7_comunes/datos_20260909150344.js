@@ -1,0 +1,430 @@
+const usuariosBase = [
+    {
+        email: "admin@huertohogar.cl",
+        password: "admin123",
+        nombre: "Administrador Principal",
+        rol: "admin" 
+    },
+    {
+        email: "cliente@correo.com",
+        password: "cliente123",
+        nombre: "Juan Pérez",
+        rol: "cliente"
+    }
+];
+const productos = [
+    {
+        codigo: "FR001",
+        nombre: "Manzanas Fuji",
+        categoria: "frutas",
+        precio: 1200,
+        unidad: "kg",
+        imagen: "../assets/img/manzana-fuji.jpg",
+        descripcion: "Manzanas Fuji crujientes y dulces, cultivadas en el Valle del Maule. Perfectas para meriendas saludables o como ingrediente en postres.",
+        origen: "Valle del Maule",
+        stock: 150
+    },
+    {
+        codigo: "FR002",
+        nombre: "Naranjas Valencia",
+        categoria: "frutas",
+        precio: 1000,
+        unidad: "kg",
+        imagen: "../assets/img/naranjas-valencia.jpg",
+        descripcion: "Jugosas y ricas en vitamina C, ideales para zumos frescos y refrescantes.",
+        origen: "Chile",
+        stock: 200
+    },
+    {
+        codigo: "FR003",
+        nombre: "Plátanos Cavendish",
+        categoria: "frutas",
+        precio: 800,
+        unidad: "kg",
+        imagen: "../assets/img/platanos-cavendish.jpg",
+        descripcion: "Plátanos maduros y dulces, perfectos para el desayuno o como snack energético.",
+        origen: "Chile",
+        stock: 250
+    },
+    {
+        codigo: "VR001",
+        nombre: "Zanahorias Orgánicas",
+        categoria: "verduras",
+        precio: 900,
+        unidad: "kg",
+        imagen: "../assets/img/zanahorias-organicas.jpg",
+        descripcion: "Zanahorias crujientes cultivadas sin pesticidas. Excelente fuente de vitamina A y fibra.",
+        origen: "Región de O'Higgins",
+        stock: 100
+    },
+    {
+        codigo: "VR002",
+        nombre: "Espinacas Frescas",
+        categoria: "verduras",
+        precio: 700,
+        unidad: "bolsa 500g",
+        imagen: "../assets/img/espinacas-frescas.jpg",
+        descripcion: "Espinacas frescas y nutritivas, perfectas para ensaladas y batidos verdes.",
+        origen: "Chile",
+        stock: 80
+    },
+    {
+        codigo: "VR003",
+        nombre: "Pimientos Tricolores",
+        categoria: "verduras",
+        precio: 1500,
+        unidad: "kg",
+        imagen: "../assets/img/pimientos-tricolores.jpg",
+        descripcion: "Pimientos rojos, amarillos y verdes, ideales para salteados y platos coloridos.",
+        origen: "Chile",
+        stock: 120
+    },
+    {
+        codigo: "PO001",
+        nombre: "Miel Orgánica",
+        categoria: "organicos",
+        precio: 5000,
+        unidad: "frasco 500g",
+        imagen: "../assets/img/miel-organica.jpg",
+        descripcion: "Miel pura y orgánica producida por apicultores locales. Rica en antioxidantes y con un sabor inigualable.",
+        origen: "Región de La Araucanía",
+        stock: 50
+    },
+    {
+        codigo: "PO003",
+        nombre: "Quinua Orgánica",
+        categoria: "organicos",
+        precio: 3200,
+        unidad: "bolsa 1kg",
+        imagen: "../assets/img/quinua-organica.jpg",
+        descripcion: "Quinua orgánica, alta en proteínas y libre de gluten, ideal para una alimentación saludable.",
+        origen: "Chile",
+        stock: 35
+    },
+    {
+        codigo: "PL001",
+        nombre: "Leche Entera",
+        categoria: "lacteos",
+        precio: 1100,
+        unidad: "litro",
+        imagen: "../assets/img/leche-entera.jpg",
+        descripcion: "Leche entera proveniente de granjas locales, rica en calcio y nutrientes esenciales.",
+        origen: "Chile",
+        stock: 90
+    }
+];
+ 
+ 
+/* ------------------------------------------------------------
+   2. FUNCIONES DEL CARRITO DE COMPRAS
+   ------------------------------------------------------------ */
+ 
+function obtenerCarrito() {
+    const carritoGuardado = localStorage.getItem("carritoHuertoHogar");
+    return carritoGuardado ? JSON.parse(carritoGuardado) : [];
+}
+ 
+function guardarCarrito(carrito) {
+    localStorage.setItem("carritoHuertoHogar", JSON.stringify(carrito));
+    actualizarContadorCarrito();
+}
+ 
+function agregarAlCarrito(codProducto, cantidad = 1) {
+    const producto = productos.find(p => p.codigo === codProducto);
+    if (!producto) {
+        console.error("Producto no encontrado:", codProducto);
+        return;
+    }
+ 
+    const carrito = obtenerCarrito();
+    const itemExistente = carrito.find(item => item.codigo === codProducto);
+ 
+    if (itemExistente) {
+        itemExistente.cantidad += cantidad;
+    } else {
+        carrito.push({
+            codigo: producto.codigo,
+            nombre: producto.nombre,
+            precio: producto.precio,
+            imagen: producto.imagen,
+            cantidad: cantidad
+        });
+    }
+ 
+    guardarCarrito(carrito); // antes se llamaba sin argumento y borraba el carrito
+}
+ 
+function eliminarDelCarrito(codProducto) {
+    let carrito = obtenerCarrito();
+    carrito = carrito.filter(item => item.codigo !== codProducto);
+    guardarCarrito(carrito);
+    renderizarCarrito();
+}
+ 
+function actualizarCantidad(codProducto, nuevaCantidad) {
+    const carrito = obtenerCarrito();
+    const item = carrito.find(item => item.codigo === codProducto);
+ 
+    if (item && nuevaCantidad > 0) {
+        item.cantidad = nuevaCantidad;
+        guardarCarrito(carrito);
+        renderizarCarrito();
+    }
+}
+ 
+function calcularTotalCarrito() {
+    const carrito = obtenerCarrito();
+    return carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
+}
+ 
+function actualizarContadorCarrito() {
+    const contador = document.querySelector("#contador-carrito");
+    if (!contador) return;
+ 
+    const carrito = obtenerCarrito();
+    const productosTotales = carrito.reduce((total, item) => total + item.cantidad, 0);
+    contador.textContent = productosTotales;
+}
+ 
+ 
+/* ------------------------------------------------------------
+   3. FUNCIONES DE RENDERIZADO (mostrar datos en el HTML)
+   ------------------------------------------------------------ */
+ 
+// Dibuja las tarjetas de productos (Bootstrap) en catalogo.html
+function renderizarProductos(listaProductos = productos) {
+    const contenedor = document.querySelector(".grid-productos");
+    if (!contenedor) return;
+ 
+    contenedor.innerHTML = "";
+ 
+    if (listaProductos.length === 0) {
+        contenedor.innerHTML = `<p class="text-center text-secondary">No se encontraron productos.</p>`;
+        return;
+    }
+ 
+    listaProductos.forEach(producto => {
+        const columna = document.createElement("div");
+        columna.classList.add("col");
+        columna.innerHTML = `
+            <div class="card h-100 shadow-sm tarjeta-producto">
+                <img src="${producto.imagen}" class="card-img-top" alt="${producto.nombre}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">${producto.nombre}</h5>
+                    <p class="card-text text-secondary small mb-1">${producto.origen}</p>
+                    <p class="card-text fw-semibold">
+                        $${producto.precio.toLocaleString("es-CL")} / ${producto.unidad}
+                    </p>
+                    <button class="btn btn-success mt-auto"
+                        onclick="agregarAlCarrito('${producto.codigo}')">
+                        Agregar al carrito
+                    </button>
+                </div>
+            </div>
+        `;
+        contenedor.appendChild(columna);
+    });
+}
+ 
+function filtrarPorCategoria(categoria) {
+    if (categoria === "todos") {
+        renderizarProductos(productos);
+    } else {
+        const filtrados = productos.filter(p => p.categoria === categoria);
+        renderizarProductos(filtrados);
+    }
+}
+ 
+// Dibuja el contenido del carrito en páginas que usen .lista-carrito
+// (si carrito.html usa su propia tabla Bootstrap, ver carrito.js en su lugar)
+function renderizarCarrito() {
+    const contenedor = document.querySelector(".lista-carrito");
+    if (!contenedor) return;
+ 
+    const carrito = obtenerCarrito();
+    contenedor.innerHTML = "";
+ 
+    if (carrito.length === 0) {
+        contenedor.innerHTML = "<p>Tu carrito está vacío.</p>";
+    } else {
+        carrito.forEach(item => {
+            const fila = document.createElement("div");
+            fila.classList.add("item-carrito");
+            fila.innerHTML = `
+                <img src="${item.imagen}" alt="${item.nombre}">
+                <span>${item.nombre}</span>
+                <input type="number" min="1" value="${item.cantidad}"
+                    onchange="actualizarCantidad('${item.codigo}', parseInt(this.value))">
+                <span>$${(item.precio * item.cantidad).toLocaleString("es-CL")}</span>
+                <button onclick="eliminarDelCarrito('${item.codigo}')">Eliminar</button>
+            `;
+            contenedor.appendChild(fila);
+        });
+    }
+ 
+    const totalElemento = document.querySelector(".total-carrito");
+    if (totalElemento) {
+        totalElemento.textContent = `Total: $${calcularTotalCarrito().toLocaleString("es-CL")}`;
+    }
+}
+
+// Simulación de una base de datos de pedidos
+const baseDePedidos = {
+    "HH-12345": { estado: "En Camino", detalle: "Su pedido ha salido de la bodega central y llegará a su domicilio en 24-48 horas." },
+    "HH-99999": { estado: "Entregado", detalle: "Su pedido fue entregado satisfactoriamente el día 20/05/2024." },
+    "HH-00000": { estado: "Pendiente", detalle: "Estamos preparando su pedido. Aún no ha sido despachado." }
+};
+
+function buscarPedido() {
+    const input = document.getElementById('nroPedido').value.trim();
+    const resDiv = document.getElementById('resultado-busqueda');
+    const estadoSpan = document.getElementById('estado-pedido');
+    const detalleP = document.getElementById('detalle-pedido');
+
+    // Limpiar resultados anteriores
+    resDiv.classList.add('d-none');
+
+    if (baseDePedidos[input]) {
+        const pedido = baseDePedidos[input];
+        estadoSpan.textContent = pedido.estado;
+        detalleP.textContent = pedido.detalle;
+        resDiv.classList.remove('d-none', 'alert-danger');
+        resDiv.classList.add('alert', 'alert-success');
+    } else {
+        estadoSpan.textContent = "No encontrado";
+        detalleP.textContent = "El número de pedido ingresado no existe en nuestro sistema. Por favor, verifique e intente nuevamente.";
+        resDiv.classList.remove('d-none', 'alert-success');
+        resDiv.classList.add('alert', 'alert-danger');
+    }
+}
+
+ 
+ 
+/* ------------------------------------------------------------
+   4. INICIALIZACIÓN
+   ------------------------------------------------------------ */
+function actualizarNavbarSegunSesion() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
+    if (usuario && usuario.sesionActiva) {
+        // Actualizar botón "Mi Cuenta"
+        const botonesMiCuenta = document.querySelectorAll('a[href*="registro.html"]');
+        botonesMiCuenta.forEach(btn => {
+            if (usuario.rol === "admin") {
+                btn.href = "../8_admin/admin.html";
+                btn.textContent = "Panel de Control";
+            } else {
+                btn.href = "../5_perfil/perfil.html";
+                btn.textContent = "Mi Perfil";
+            }
+        });
+
+        // Añadir botón Cerrar Sesión para cualquier usuario loggeado
+        const navbarNav = document.querySelector(".navbar-nav");
+        if (navbarNav && !document.getElementById("nav-logout-btn")) {
+            const li = document.createElement("li");
+            li.className = "nav-item";
+            li.innerHTML = `<a id="nav-logout-btn" class="nav-link text-danger" href="#" onclick="cerrarSesion()">Cerrar Sesión</a>`;
+            navbarNav.appendChild(li);
+        }
+    }
+}
+
+window.cerrarSesion = function() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
+    if (usuario) {
+        usuario.sesionActiva = false;
+        localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
+    }
+    window.location.href = "../1_inicio/index.html";
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+    actualizarNavbarSegunSesion();
+    actualizarContadorCarrito();
+    
+    // 1. Obtener o crear usuario por defecto para mantener sesión activa
+    let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
+
+    if (!usuario) {
+        usuario = {
+            nombre: "Juan Pérez",
+            email: "juan.perez@email.cl",
+            telefono: "+56 9 8765 4321",
+            direccion: "Av. Vicuña Mackenna 4860, San Joaquín",
+            ciudad: "Santiago",
+            puntos: 250
+        };
+        localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
+    }
+
+    // 2. Renderizar los datos guardados en la interfaz
+    renderizarDatosPerfil(usuario);
+
+    // 3. Escuchar la actualización del formulario
+    const formPerfil = document.getElementById("form-perfil");
+    if (formPerfil) {
+        formPerfil.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            // Leer nuevos datos ingresados
+            const usuarioActualizado = {
+                ...usuario,
+                nombre: document.getElementById("perfil-nombre").value.trim(),
+                telefono: document.getElementById("perfil-telefono").value.trim(),
+                direccion: document.getElementById("perfil-direccion").value.trim(),
+                ciudad: document.getElementById("perfil-ciudad").value
+            };
+
+            // Guardar permanentemente en localStorage
+            localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuarioActualizado));
+
+            // Actualizar vista
+            renderizarDatosPerfil(usuarioActualizado);
+            alert("¡Tus datos han sido guardados y actualizados con éxito!");
+        });
+    }
+});
+
+function renderizarDatosPerfil(usuario) {
+    if (!usuario) return;
+
+    // Actualizar Iniciales en Avatar
+    const avatar = document.querySelector(".avatar-circle");
+    if (avatar && usuario.nombre) {
+        const iniciales = usuario.nombre
+            .split(" ")
+            .map(n => n[0])
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+        avatar.textContent = iniciales || "U";
+    }
+
+    // Actualizar tarjeta de resumen izquierda
+    const elemNombre = document.querySelector(".card-perfil-resumen h3");
+    if (elemNombre) elemNombre.textContent = usuario.nombre;
+
+    const elemEmail = document.querySelector(".card-perfil-resumen span:nth-of-type(1)");
+    if (elemEmail) elemEmail.textContent = usuario.email;
+
+    const elemTel = document.querySelector(".card-perfil-resumen span:nth-of-type(2)");
+    if (elemTel) elemTel.textContent = usuario.telefono;
+
+    const elemPuntos = document.querySelector(".card-perfil-resumen h4");
+    if (elemPuntos && usuario.puntos !== undefined) {
+        elemPuntos.textContent = `${usuario.puntos} Puntos`;
+    }
+
+    // Cargar valores dentro del formulario derecha
+    const inputNombre = document.getElementById("perfil-nombre");
+    if (inputNombre) inputNombre.value = usuario.nombre || "";
+
+    const inputTel = document.getElementById("perfil-telefono");
+    if (inputTel) inputTel.value = usuario.telefono || "";
+
+    const inputDir = document.getElementById("perfil-direccion");
+    if (inputDir) inputDir.value = usuario.direccion || "";
+
+    const selectCiudad = document.getElementById("perfil-ciudad");
+    if (selectCiudad && usuario.ciudad) selectCiudad.value = usuario.ciudad;
+}
