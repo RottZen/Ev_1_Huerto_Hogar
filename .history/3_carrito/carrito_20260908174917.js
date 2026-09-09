@@ -50,13 +50,6 @@ function actualizarTotales() {
 
     document.getElementById("total-pagar").textContent =
         `$${total.toLocaleString("es-CL")} CLP`;
-    //FIX DEL CONTADOR DEL CARRITO EN EL HEADER
-    const carrito = obtenerCarrito();
-    const cantidadTotal = carrito.reduce((acc, item) => acc + item.cantidad, 0);
-    const badgeHeader = document.getElementById("contador-carrito");
-    if (badgeHeader) {
-        badgeHeader.textContent = cantidadTotal;
-    }    
 }
 
 // Wrapper: cambia la cantidad y vuelve a dibujar la tabla completa
