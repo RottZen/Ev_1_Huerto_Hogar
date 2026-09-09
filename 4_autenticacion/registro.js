@@ -7,20 +7,18 @@ document.addEventListener("DOMContentLoaded", () => {
         formRegistro.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            // Capturar datos del formulario
             const nuevoUsuario = {
                 nombre: document.getElementById("registro-nombre").value.trim(),
                 email: document.getElementById("registro-email").value.trim(),
                 telefono: "+56 " + document.getElementById("registro-telefono").value.trim(),
                 direccion: "Dirección por definir",
                 ciudad: "Santiago",
-                puntos: 50 // Puntos de bienvenida
+                puntos: 50,
+                sesionActiva: true // <--- Marcamos sesión como activa
             };
 
-            // Guardar usuario en localStorage
             localStorage.setItem("usuarioHuertoHogar", JSON.stringify(nuevoUsuario));
-
-            alert("¡Registro exitoso! Te hemos regalado 50 HuertoPuntos de bienvenida.");
+            alert("¡Registro exitoso! Redirigiendo a tu cuenta...");
             window.location.href = "../5_perfil/perfil.html";
         });
     }
@@ -31,9 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             const email = document.getElementById("login-email").value.trim();
 
-            // Si ya existe un usuario guardado, mantener sus datos; si no, crear una sesión básica
             let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
-            if (!usuario || usuario.email !== email) {
+            
+            if (!usuario) {
                 usuario = {
                     nombre: email.split("@")[0],
                     email: email,
@@ -42,8 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     ciudad: "Santiago",
                     puntos: 100
                 };
-                localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
             }
+            
+            usuario.sesionActiva = true; // <--- Marcamos sesión como activa
+            localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
 
             window.location.href = "../5_perfil/perfil.html";
         });

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Obtener o crear usuario por defecto para mantener sesión activa
+    // 1. Verificar si hay un usuario cargado o crear uno por defecto activo
     let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
 
     if (!usuario) {
@@ -9,32 +9,43 @@ document.addEventListener("DOMContentLoaded", () => {
             telefono: "+56 9 8765 4321",
             direccion: "Av. Vicuña Mackenna 4860, San Joaquín",
             ciudad: "Santiago",
-            puntos: 250
+            puntos: 250,
+            sesionActiva: true
         };
         localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
     }
+
+    // 2. Renderizar los datos iniciales
     renderizarDatosPerfil(usuario);
 
+    // 3. Manejar envío del formulario de actualización
     const formPerfil = document.getElementById("form-perfil");
     if (formPerfil) {
         formPerfil.addEventListener("submit", (e) => {
             e.preventDefault();
 
-            // Leer nuevos s
-            const usuarioActualizado = {
-                ...usuario,
-                nombre: document.getElementById("perfil-nombre").value.trim(),
-                telefono: document.getElementById("perfil-telefono").value.trim(),
-                direccion: document.getElementById("perfil-direccion").value.trim(),
-                ciudad: document.getElementById("perfil-ciudad").value
-            };
+            usuario.nombre = document.getElementById("perfil-nombre").value.trim();
+            usuario.telefono = document.getElementById("perfil-telefono").value.trim();
+            usuario.direccion = document.getElementById("perfil-direccion").value.trim();
+            usuario.ciudad = document.getElementById("perfil-ciudad").value;
 
-            // Guardar permanentemente en localStorage
-            localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuarioActualizado));
+            localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
 
-            // Actualizar vista
-            renderizarDatosPerfil(usuarioActualizado);
-            alert("¡Tus datos han sido guardados y actualizados con éxito!");
+            renderizarDatosPerfil(usuario);
+            alert("¡Tus datos han sido actualizados con éxito!");
+        });
+    }
+
+    // 4. Manejar botón de CERRAR SESIÓN
+    const btnCerrarSesion = document.getElementById("btn-cerrar-sesion");
+    if (btnCerrarSesion) {
+        btnCerrarSesion.addEventListener("click", () => {
+            if (usuario) {
+                usuario.sesionActiva = false;
+                localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
+            }
+            alert("Has cerrado sesión exitosamente.");
+            window.location.href = "../4_autenticacion/registro.html";
         });
     }
 });
@@ -42,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderizarDatosPerfil(usuario) {
     if (!usuario) return;
 
-
+    // Actualizar Avatar
     const avatar = document.querySelector(".avatar-circle");
     if (avatar && usuario.nombre) {
         const iniciales = usuario.nombre
@@ -54,6 +65,7 @@ function renderizarDatosPerfil(usuario) {
         avatar.textContent = iniciales || "U";
     }
 
+    // Actualizar Resumen Izquierdo
     const elemNombre = document.querySelector(".card-perfil-resumen h3");
     if (elemNombre) elemNombre.textContent = usuario.nombre;
 
@@ -67,6 +79,8 @@ function renderizarDatosPerfil(usuario) {
     if (elemPuntos && usuario.puntos !== undefined) {
         elemPuntos.textContent = `${usuario.puntos} Puntos`;
     }
+
+    // Llenar Formulario Derecho
     const inputNombre = document.getElementById("perfil-nombre");
     if (inputNombre) inputNombre.value = usuario.nombre || "";
 

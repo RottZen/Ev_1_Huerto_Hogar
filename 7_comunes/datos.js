@@ -295,3 +295,32 @@ document.addEventListener("DOMContentLoaded", () => {
     renderizarCarrito();
 });
  
+// CONTROL GLOBAL DE NAVEGACIÓN DE SESIÓN
+document.addEventListener("DOMContentLoaded", () => {
+    // Buscar todos los enlaces o botones de "Mi Cuenta" en el header
+    const botonesMiCuenta = document.querySelectorAll('a[href*="registro.html"], a[href*="perfil.html"]');
+
+    botonesMiCuenta.forEach((boton) => {
+        boton.addEventListener("click", (e) => {
+            const usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
+
+            // Si hay un usuario registrado con sesión activa, redirigir siempre a perfil.html
+            if (usuario && usuario.sesionActiva) {
+                e.preventDefault();
+                
+                // Evaluar la ruta según la carpeta actual
+                const esSubcarpeta = window.location.pathname.includes("1_inicio") || 
+                                     window.location.pathname.includes("2_catalogo") || 
+                                     window.location.pathname.includes("3_carrito") || 
+                                     window.location.pathname.includes("4_autenticacion") || 
+                                     window.location.pathname.includes("6_seguimiento");
+
+                if (esSubcarpeta) {
+                    window.location.href = "../5_perfil/perfil.html";
+                } else {
+                    window.location.href = "perfil.html";
+                }
+            }
+        });
+    });
+});
