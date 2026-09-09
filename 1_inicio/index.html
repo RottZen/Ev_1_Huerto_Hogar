@@ -62,12 +62,53 @@
 
         <!-- contenedor js     -->
         </div>    
-        <div class="grid-productos row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4"></div>
+        <div class="grid-productos row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4 mb-5"></div>
 
+        <!-- SECCIÓN NOSOTROS -->
+        <section class="mb-5 bg-white p-5 rounded-4 shadow-sm border border-light mt-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-3" style="font-family: 'Playfair Display', serif; color: #2e8b57;">Sobre Nosotros</h2>
+                    <p class="text-muted lead mb-4">En HuertoHogar creemos en lo natural, lo fresco y lo local.</p>
+                    <p class="text-secondary">Somos un equipo de desarrolladores (Equipo TRAIGANMEN AL JSON) apasionados por conectar a los agricultores y granjas locales directamente con tu mesa. Nos dedicamos a seleccionar meticulosamente los mejores productos orgánicos, frutas, verduras y lácteos para asegurar que tu familia consuma alimentos de la más alta calidad, cultivados con amor y respeto por la tierra.</p>
+                </div>
+                <div class="col-lg-6 text-center">
+                    <img src="../assets/img/logo.png" alt="Equipo HuertoHogar" class="img-fluid rounded-3" style="max-height: 250px; object-fit: contain;">
+                </div>
+            </div>
+        </section>
 
+        <!-- SECCIÓN CONTACTO -->
+        <section class="mb-5 bg-light p-5 rounded-4 shadow-sm">
+            <div class="text-center mb-4">
+                <h2 class="fw-bold mb-2" style="font-family: 'Playfair Display', serif; color: #2e8b57;">Contáctanos</h2>
+                <p class="text-muted">¿Tienes dudas o sugerencias? Déjanos un mensaje.</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <form id="form-contacto" onsubmit="event.preventDefault(); alert('¡Gracias por contactarnos! Tu mensaje ha sido enviado.'); this.reset();">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small fw-bold">Nombre Completo</label>
+                                <input type="text" class="form-control shadow-sm" required placeholder="Tu nombre">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label text-muted small fw-bold">Correo Electrónico</label>
+                                <input type="email" class="form-control shadow-sm" required placeholder="tu@correo.cl">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label text-muted small fw-bold">Mensaje</label>
+                            <textarea class="form-control shadow-sm" rows="4" required placeholder="Escribe tu mensaje aquí..."></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success px-5 py-2 rounded-pill fw-bold shadow-sm">Enviar Mensaje</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
 
-
-    
     </main>    
     <footer class="bg-dark text-light py-4 mt-auto">
         <div class="container text-center">
