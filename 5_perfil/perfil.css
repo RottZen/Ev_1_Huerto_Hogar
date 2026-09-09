@@ -1,0 +1,11 @@
+
+.avatar-circle {
+    width: 90px;
+    height: 90px;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.card-perfil-resumen {
+    border-radius: 12px;
+}
