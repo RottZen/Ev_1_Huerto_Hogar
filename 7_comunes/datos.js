@@ -253,6 +253,37 @@ function renderizarCarrito() {
         totalElemento.textContent = `Total: $${calcularTotalCarrito().toLocaleString("es-CL")}`;
     }
 }
+
+// Simulación de una base de datos de pedidos
+const baseDePedidos = {
+    "HH-12345": { estado: "En Camino", detalle: "Su pedido ha salido de la bodega central y llegará a su domicilio en 24-48 horas." },
+    "HH-99999": { estado: "Entregado", detalle: "Su pedido fue entregado satisfactoriamente el día 20/05/2024." },
+    "HH-00000": { estado: "Pendiente", detalle: "Estamos preparando su pedido. Aún no ha sido despachado." }
+};
+
+function buscarPedido() {
+    const input = document.getElementById('nroPedido').value.trim();
+    const resDiv = document.getElementById('resultado-busqueda');
+    const estadoSpan = document.getElementById('estado-pedido');
+    const detalleP = document.getElementById('detalle-pedido');
+
+    // Limpiar resultados anteriores
+    resDiv.classList.add('d-none');
+
+    if (baseDePedidos[input]) {
+        const pedido = baseDePedidos[input];
+        estadoSpan.textContent = pedido.estado;
+        detalleP.textContent = pedido.detalle;
+        resDiv.classList.remove('d-none', 'alert-danger');
+        resDiv.classList.add('alert', 'alert-success');
+    } else {
+        estadoSpan.textContent = "No encontrado";
+        detalleP.textContent = "El número de pedido ingresado no existe en nuestro sistema. Por favor, verifique e intente nuevamente.";
+        resDiv.classList.remove('d-none', 'alert-success');
+        resDiv.classList.add('alert', 'alert-danger');
+    }
+}
+
  
  
 /* ------------------------------------------------------------
