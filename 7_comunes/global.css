@@ -48,7 +48,7 @@ h1, h2, h3, h4{
     color: var(--gris-oscuro) !important;
 }
 
-/* Estilos para el seguimiento */
+
 .pasos-container {
     position: relative;
     padding-top: 10px;
@@ -57,11 +57,11 @@ h1, h2, h3, h4{
 .paso-seguimiento {
     text-align: center;
     flex: 1;
-    color: #ccc; /* Color gris para pasos no completados */
+    color: #ccc; 
 }
 
 .paso-seguimiento.completado {
-    color: #198754; /* Verde Bootstrap para pasos completados */
+    color: #198754; 
     font-weight: bold;
 }
 
