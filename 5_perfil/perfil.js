@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Verificar si hay un usuario cargado o crear uno por defecto activo
+    // 1. Obtener usuario o crear uno base con compras iniciales
     let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
 
     if (!usuario) {
@@ -10,15 +10,28 @@ document.addEventListener("DOMContentLoaded", () => {
             direccion: "Av. Vicuña Mackenna 4860, San Joaquín",
             ciudad: "Santiago",
             puntos: 250,
-            sesionActiva: true
+            sesionActiva: true,
+            historialCompras: [
+                { id: "#HH-1092", fecha: "02/09/2026", total: "$12.500 CLP", estado: "Entregado" },
+                { id: "#HH-1045", fecha: "18/08/2026", total: "$8.900 CLP", estado: "Entregado" }
+            ]
         };
         localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
     }
 
-    // 2. Renderizar los datos iniciales
-    renderizarDatosPerfil(usuario);
+    // Asegurar que exista el arreglo de historial
+    if (!usuario.historialCompras) {
+        usuario.historialCompras = [
+            { id: "#HH-1092", fecha: "02/09/2026", total: "$12.500 CLP", estado: "Entregado" }
+        ];
+        localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
+    }
 
-    // 3. Manejar envío del formulario de actualización
+    // 2. Renderizar Datos de Usuario y Compras
+    renderizarDatosPerfil(usuario);
+    renderizarHistorialCompras(usuario.historialCompras);
+
+    // 3. Guardar Formulario de Perfil
     const formPerfil = document.getElementById("form-perfil");
     if (formPerfil) {
         formPerfil.addEventListener("submit", (e) => {
@@ -36,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. Manejar botón de CERRAR SESIÓN
+    // 4. Cerrar Sesión
     const btnCerrarSesion = document.getElementById("btn-cerrar-sesion");
     if (btnCerrarSesion) {
         btnCerrarSesion.addEventListener("click", () => {
@@ -53,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderizarDatosPerfil(usuario) {
     if (!usuario) return;
 
-    // Actualizar Avatar
+    // Avatar
     const avatar = document.querySelector(".avatar-circle");
     if (avatar && usuario.nombre) {
         const iniciales = usuario.nombre
@@ -65,7 +78,7 @@ function renderizarDatosPerfil(usuario) {
         avatar.textContent = iniciales || "U";
     }
 
-    // Actualizar Resumen Izquierdo
+    // Datos Tarjeta
     const elemNombre = document.querySelector(".card-perfil-resumen h3");
     if (elemNombre) elemNombre.textContent = usuario.nombre;
 
@@ -80,7 +93,7 @@ function renderizarDatosPerfil(usuario) {
         elemPuntos.textContent = `${usuario.puntos} Puntos`;
     }
 
-    // Llenar Formulario Derecho
+    // Inputs
     const inputNombre = document.getElementById("perfil-nombre");
     if (inputNombre) inputNombre.value = usuario.nombre || "";
 
@@ -92,4 +105,31 @@ function renderizarDatosPerfil(usuario) {
 
     const selectCiudad = document.getElementById("perfil-ciudad");
     if (selectCiudad && usuario.ciudad) selectCiudad.value = usuario.ciudad;
+}
+
+// Función para pintar la tabla de compras dinámica
+function renderizarHistorialCompras(compras) {
+    const tbody = document.querySelector("table tbody");
+    if (!tbody) return;
+
+    tbody.innerHTML = "";
+
+    if (compras.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">Aún no has realizado compras.</td></tr>`;
+        return;
+    }
+
+    compras.forEach(compra => {
+        const colorBadge = compra.estado === "Entregado" ? "bg-success" : "bg-warning text-dark";
+        
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+            <td class="fw-bold">${compra.id}</td>
+            <td>${compra.fecha}</td>
+            <td>${compra.total}</td>
+            <td><span class="badge ${colorBadge}">${compra.estado}</span></td>
+            <td><button class="btn btn-sm btn-outline-success btn-repetir">Repetir Pedido</button></td>
+        `;
+        tbody.appendChild(fila);
+    });
 }
