@@ -303,7 +303,6 @@ function buscarPedido() {
 /* ------------------------------------------------------------
    4. INICIALIZACIÓN
    ------------------------------------------------------------ */
-
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Obtener o crear usuario por defecto para mantener sesión activa
     let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
