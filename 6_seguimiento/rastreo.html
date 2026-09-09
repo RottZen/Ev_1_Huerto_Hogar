@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seguimiento - HuertoHogar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../7_comunes/global.css">
 </head>
+
 <body class="d-flex flex-column min-vh-100">
-    
+
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="../1_inicio/index.html">
-                    <img src="../assets/img/logo.png" alt="Logo HuertoHogar" class="logo-header d-inline-block align-text-center">
+                    <img src="../assets/img/logo.png" alt="Logo HuertoHogar"
+                        class="logo-header d-inline-block align-text-center">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacion">
                     <span class="navbar-toggler-icon"></span>
@@ -42,21 +47,15 @@
             <div class="col-md-6">
                 <div class="card shadow-sm p-4">
                     <div class="mb-3">
-                        <label for="nroPedido" class="form-label">Ingrese su número de pedido</label>
-                        <input type="text" class="form-control" id="nroPedido" placeholder="Ej: HH-12345">
+                        <label for="input-codigo-pedido" class="form-label">Ingrese su número de pedido</label>
+                        <input type="text" class="form-control" id="input-codigo-pedido" placeholder="Ej: HH-1001">
                     </div>
-                    <button class="btn btn-success w-100" onclick="buscarPedido()">Consultar Estado</button>
-                </div>
-                <div id="resultado-busqueda" class="mt-4 p-3 border rounded d-none">
-                    <h5>Estado: <span id="estado-pedido"></span></h5>
-                    <p id="detalle-pedido"></p>
+                    <!-- El botón ahora tiene el ID que tu JS espera -->
+                    <button id="btn-buscar-pedido" class="btn btn-success w-100">Consultar Estado</button>
                 </div>
 
-                <!-- Resultado -->
-                <div id="resultado-busqueda" class="mt-4 p-3 border rounded d-none">
-                    <h5>Estado: <span id="estado-pedido" class="text-success"></span></h5>
-                    <p id="detalle-pedido"></p>
-                </div>
+                <!-- Contenedor único donde se inyectará el resultado -->
+                <div id="resultado-rastreo" class="mt-4"></div>
             </div>
         </div>
     </main>
@@ -69,23 +68,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../7_comunes/datos.js"></script>
-    <script>
-        function buscarPedido() {
-            const input = document.getElementById('nroPedido').value;
-            const resDiv = document.getElementById('resultado-busqueda');
-            const estado = document.getElementById('estado-pedido');
-            const detalle = document.getElementById('detalle-pedido');
+    <script src="rastreo.js"></script> 
 
-            if(input.trim() === "") {
-                alert("Por favor ingrese un número de pedido");
-                return;
-            }
-
-            // Simulamos una búsqueda
-            resDiv.classList.remove('d-none');
-            estado.textContent = "En Camino";
-            detalle.textContent = "Su pedido HH-12345 ha salido de nuestra bodega central y llegará a su domicilio en 24-48 horas.";
-        }
-    </script>
 </body>
+
 </html>

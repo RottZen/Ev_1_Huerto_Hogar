@@ -47,3 +47,38 @@ h1, h2, h3, h4{
     border-color: var(--amarillo-mostaza) !important;
     color: var(--gris-oscuro) !important;
 }
+
+/* Estilos para el seguimiento */
+.pasos-container {
+    position: relative;
+    padding-top: 10px;
+}
+
+.paso-seguimiento {
+    text-align: center;
+    flex: 1;
+    color: #ccc; /* Color gris para pasos no completados */
+}
+
+.paso-seguimiento.completado {
+    color: #198754; /* Verde Bootstrap para pasos completados */
+    font-weight: bold;
+}
+
+.circulo-paso {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin: 0 auto 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+}
+
+.completado .circulo-paso {
+    border-color: #198754;
+    background-color: #198754;
+    color: white;
+}
