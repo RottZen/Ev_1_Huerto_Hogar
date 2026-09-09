@@ -1,8 +1,8 @@
 function renderizarTablaCarrito() {
     const tabla = document.getElementById("tabla-carrito");
-    const carrito = obtenerCarrito(); // función de datos.js
+    const carrito = obtenerCarrito(); 
 
-    tabla.innerHTML = ""; // limpiamos antes de redibujar
+    tabla.innerHTML = ""; 
 
     if (carrito.length === 0) {
         tabla.innerHTML = `
@@ -41,9 +41,9 @@ function renderizarTablaCarrito() {
     actualizarTotales();
 }
 
-// Actualiza el Subtotal y el Total a pagar en la columna derecha
+
 function actualizarTotales() {
-    const total = calcularTotalCarrito(); // función de datos.js
+    const total = calcularTotalCarrito(); 
 
     document.getElementById("subtotal-carrito").textContent =
         `$${total.toLocaleString("es-CL")} CLP`;
@@ -51,7 +51,7 @@ function actualizarTotales() {
     document.getElementById("total-carrito").textContent =
         `$${total.toLocaleString("es-CL")} CLP`;
 
-    // FIX DEL CONTADOR DEL CARRITO EN EL HEADER
+    
     const carrito = obtenerCarrito();
     const cantidadTotal = carrito.reduce((acc, item) => acc + item.cantidad, 0);
     const badgeHeader = document.getElementById("contador-carrito");
@@ -60,27 +60,27 @@ function actualizarTotales() {
     }    
 }
 
-// Wrapper: cambia la cantidad y vuelve a dibujar la tabla completa
+
 function cambiarCantidad(codProducto, nuevaCantidad) {
     const cantidad = parseInt(nuevaCantidad);
 
-    if (isNaN(cantidad) || cantidad < 1) return; // ignora valores inválidos
+    if (isNaN(cantidad) || cantidad < 1) return; 
 
-    actualizarCantidad(codProducto, cantidad); // función de datos.js
+    actualizarCantidad(codProducto, cantidad); 
     renderizarTablaCarrito();
 }
 
-// Wrapper: elimina el producto y vuelve a dibujar la tabla completa
+
 function quitarProducto(codProducto) {
-    eliminarDelCarrito(codProducto); // función de datos.js
+    eliminarDelCarrito(codProducto);
     renderizarTablaCarrito();
 }
 
-// Guarda la orden en el historial de perfil del usuario
+
 function registrarCompraEnHistorial(totalCompra) {
     let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
 
-    // Si no existiera sesión previa, creamos un perfil base activo
+    
     if (!usuario) {
         usuario = {
             nombre: "Juan Pérez",
@@ -98,7 +98,7 @@ function registrarCompraEnHistorial(totalCompra) {
         usuario.historialCompras = [];
     }
 
-    // Crear el número de orden y fecha
+   
     const numeroPedido = "#HH-" + Math.floor(1000 + Math.random() * 9000);
     const fechaActual = new Date().toLocaleDateString('es-CL');
 
@@ -109,14 +109,14 @@ function registrarCompraEnHistorial(totalCompra) {
         estado: "En Preparación"
     };
 
-    // Agregar la compra al principio del historial
+   
     usuario.historialCompras.unshift(nuevaOrden);
 
-    // Sumar 10% del total de la compra en HuertoPuntos
+   
     const puntosGanados = Math.floor(totalCompra * 0.1);
     usuario.puntos = (usuario.puntos || 0) + puntosGanados;
 
-    // Guardar cambios en el localStorage
+    
     localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
 }
 
@@ -130,12 +130,12 @@ function confirmarPedido() {
 
     const totalCompra = calcularTotalCarrito();
 
-    // Guardar pedido en el perfil del usuario activo
+    
     registrarCompraEnHistorial(totalCompra);
 
     alert("¡Pedido confirmado! Gracias por tu compra en HuertoHogar. Puedes revisar el estado de tu pedido en tu Cuenta.");
 
-    // Vaciar el carrito y re-renderizar
+   
     localStorage.removeItem("carritoHuertoHogar");
     renderizarTablaCarrito();
 }

@@ -3,7 +3,7 @@ function buscarProductos(texto) {
     const textoBusqueda = texto.trim().toLowerCase();
 
     if (textoBusqueda === "") {
-        renderizarProductos(productos); // sin texto, muestra todo
+        renderizarProductos(productos); 
         return;
     }
 
@@ -23,7 +23,7 @@ function marcarFiltroActivo(botonSeleccionado) {
 }
 
 function seleccionarCategoria(categoria, boton) {
-    filtrarPorCategoria(categoria); // función de datos.js
+    filtrarPorCategoria(categoria); 
     marcarFiltroActivo(boton);
 
     const buscador = document.getElementById("buscador-productos");
@@ -31,7 +31,7 @@ function seleccionarCategoria(categoria, boton) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Inicializar catálogo mostrando todos los productos
+    
     if (document.querySelector(".grid-productos")) {
         renderizarProductos(productos);
     }

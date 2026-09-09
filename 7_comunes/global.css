@@ -1,7 +1,7 @@
 /* tipografia */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@600;700&display=swap');
 
-/* variable colores of */
+
 :root{
     --blanco-suave: #f6f6f6;
     --verde-esmeralda: #2e8b57;
@@ -18,7 +18,6 @@
     
 }
 
-/* configuracion base */
 body{
     background-color: var(--blanco-suave);
     color : var(--gris-oscuro);
@@ -31,7 +30,7 @@ h1, h2, h3, h4{
 }
 
 
-/* sobreescribir botones feos de bootstrap */
+
 
 .btn-primary{
     background-color: var(--verde-esmeralda) !important;
@@ -101,7 +100,6 @@ h1, h2, h3, h4{
     font-weight: 600;
 }
 
-/* Estandarización global de imágenes de tarjetas de productos */
 .grid-productos .card-img-top {
     height: 130px;
     object-fit: cover;

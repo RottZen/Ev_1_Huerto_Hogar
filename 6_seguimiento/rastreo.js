@@ -2,19 +2,19 @@
 const pedidos = [
     {
         codigo: "HH-1001",
-        estado: 1, // En Preparación
+        estado: 1, 
         fechaPedido: "2026-09-01",
         fechaEntregaEstimada: "2026-09-05"
     },
     {
         codigo: "HH-1002",
-        estado: 3, // Entregado
+        estado: 3,
         fechaPedido: "2026-08-28",
         fechaEntregaEstimada: "2026-09-02"
     },
     {
         codigo: "HH-1003",
-        estado: 0, // Pedido Confirmado
+        estado: 0, 
         fechaPedido: "2026-09-07",
         fechaEntregaEstimada: "2026-09-10"
     }
@@ -47,7 +47,7 @@ function buscarPedido() {
     contenedorResultado.innerHTML = generarHTMLPedido(pedido);
 }
 
-// Construye la tarjeta con la línea de tiempo de estado del pedido
+
 function generarHTMLPedido(pedido) {
     const pasosHTML = ESTADOS.map((nombrePaso, index) => {
         const completado = index <= pedido.estado;
@@ -73,13 +73,12 @@ function generarHTMLPedido(pedido) {
     `;
 }
 
-// Convierte "2026-09-05" en "5 de septiembre de 2026"
 function formatearFecha(fechaISO) {
     const fecha = new Date(fechaISO + "T00:00:00"); // evita corrimiento de zona horaria
     return fecha.toLocaleDateString("es-CL", { day: "numeric", month: "long", year: "numeric" });
 }
 
-// Guarda la fecha de entrega preferida del usuario en localStorage
+
 function guardarFechaPreferida() {
     const input = document.getElementById("fecha-entrega-preferida");
 
@@ -107,7 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const botonGuardarFecha = document.getElementById("btn-guardar-fecha");
     if (botonGuardarFecha) botonGuardarFecha.addEventListener("click", guardarFechaPreferida);
 
-    // Si el usuario ya había guardado una fecha antes, la mostramos de entrada
+   
     const fechaGuardada = localStorage.getItem("fechaEntregaPreferida");
     const inputFecha = document.getElementById("fecha-entrega-preferida");
     if (fechaGuardada && inputFecha) {

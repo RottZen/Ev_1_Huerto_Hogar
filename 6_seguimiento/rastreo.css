@@ -39,7 +39,6 @@
     transition: background-color 0.2s ease;
 }
 
-/* Paso ya alcanzado por el pedido: se pinta de verde */
 .paso-seguimiento.completado .circulo-paso {
     background-color: var(--verde-esmeralda);
     color: white;
