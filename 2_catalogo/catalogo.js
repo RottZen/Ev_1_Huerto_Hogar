@@ -30,3 +30,9 @@ function seleccionarCategoria(categoria, boton) {
     if (buscador) buscador.value = "";
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+    // Inicializar catálogo mostrando todos los productos
+    if (document.querySelector(".grid-productos")) {
+        renderizarProductos(productos);
+    }
+});

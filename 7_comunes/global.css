@@ -100,3 +100,9 @@ h1, h2, h3, h4{
     color: #198754;
     font-weight: 600;
 }
+
+/* Estandarización global de imágenes de tarjetas de productos */
+.grid-productos .card-img-top {
+    height: 130px;
+    object-fit: cover;
+}

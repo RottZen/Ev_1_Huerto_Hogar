@@ -24,9 +24,8 @@
                 <div class="collapse navbar-collapse" id="menuNavegacion">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link" href="../1_inicio/index.html">Inicio</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../2_catalogo/catalogo.html">Catalogo</a></li>
+                        <li class="nav-item"><a class="nav-link" href="../2_catalogo/catalogo.html">Catálogo</a></li>
                         <li class="nav-item"><a class="nav-link" href="../6_seguimiento/rastreo.html">Seguimiento</a></li>
-                        <li class="nav-item"> <a class="nav-link active fw-bold text-danger" href="admin.html">Panel Admin</a></li>
                     </ul>
                     <div class="d-flex gap-2">
                         <a href="../4_autenticacion/registro.html" class="btn btn-outline-success">Mi Cuenta</a>
@@ -41,32 +40,141 @@
     </header>
 
     <!-- MAIN CONTENEDOR DINAMICO -->
-    <main class="container my-5 flex-grow-1">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Gestion de productos</h2>
-            <button class="btn btn-primary ms-4">+ Nuevo Producto</button>
+    <main class="container my-3 flex-grow-1">
+        
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2 class="fw-bold fs-4 mb-0" style="font-family: 'Playfair Display', serif; color: #198754;">Gestión de Productos</h2>
+                <p class="text-muted small mb-0">Administra el inventario y catálogo de HuertoHogar</p>
+            </div>
+            <button class="btn btn-success btn-sm shadow-sm rounded-pill px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#modalNuevoProducto">+ Nuevo Producto</button>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>cod.</th>
-                        <th>Imagen</th>
-                        <th>Nombre</th>
-                        <th>Categoria</th>
-                        <th>Precio</th>
-                        <th>Stock</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-admin-productos"></tbody>
-            </table>
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-sm align-middle mb-0" style="font-size: 0.9rem;">
+                        <thead class="bg-success text-white">
+                            <tr>
+                                <th class="ps-3 rounded-top-left py-2">Cod.</th>
+                                <th class="py-2">Imagen</th>
+                                <th class="py-2">Nombre</th>
+                                <th class="py-2">Categoría</th>
+                                <th class="py-2">Precio</th>
+                                <th class="py-2">Stock</th>
+                                <th class="text-center rounded-top-right py-2">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-admin-productos"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
+        <!-- Modal Nuevo Producto -->
+        <div class="modal fade" id="modalNuevoProducto" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-success text-white border-0">
+                        <h5 class="modal-title fw-bold">Agregar Nuevo Producto</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form id="form-nuevo-producto">
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-bold">Código</label>
+                                <input type="text" class="form-control" id="prod-codigo" placeholder="Ej: FR004" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-bold">Nombre</label>
+                                <input type="text" class="form-control" id="prod-nombre" placeholder="Ej: Frutillas Frescas" required>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label class="form-label text-muted small fw-bold">Categoría</label>
+                                    <select class="form-select" id="prod-categoria" required>
+                                        <option value="frutas">Frutas</option>
+                                        <option value="verduras">Verduras</option>
+                                        <option value="organicos">Orgánicos</option>
+                                        <option value="lacteos">Lácteos</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label text-muted small fw-bold">Precio ($)</label>
+                                    <input type="number" class="form-control" id="prod-precio" required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label class="form-label text-muted small fw-bold">Stock Inicial</label>
+                                    <input type="number" class="form-control" id="prod-stock" required>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label text-muted small fw-bold">Unidad (Ej: kg)</label>
+                                    <input type="text" class="form-control" id="prod-unidad" required>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label text-muted small fw-bold">URL de la Imagen</label>
+                                <input type="text" class="form-control" id="prod-imagen" value="../assets/img/logo.png" required>
+                            </div>
+                            <button type="submit" class="btn btn-success w-100 fw-bold rounded-pill">Guardar Producto en Catálogo</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Editar Producto -->
+        <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-primary text-white border-0">
+                        <h5 class="modal-title fw-bold">Editar Producto</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4">
+                        <form id="form-editar-producto">
+                            <input type="hidden" id="edit-prod-codigo">
+                            <div class="mb-3">
+                                <label class="form-label text-muted small fw-bold">Nombre</label>
+                                <input type="text" class="form-control" id="edit-prod-nombre" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label text-muted small fw-bold">Precio ($)</label>
+                                <input type="number" class="form-control" id="edit-prod-precio" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100 fw-bold rounded-pill">Guardar Cambios</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Eliminar Producto -->
+        <div class="modal fade" id="modalEliminarProducto" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow">
+                    <div class="modal-header bg-danger text-white border-0">
+                        <h5 class="modal-title fw-bold">Confirmar Eliminación</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-4 text-center">
+                        <p class="fs-5 mb-4">¿Estás seguro de querer eliminar este elemento?</p>
+                        <p class="text-muted fw-bold fs-5" id="eliminar-prod-nombre"></p>
+                        <input type="hidden" id="eliminar-prod-codigo">
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <button type="button" class="btn btn-secondary px-4 rounded-pill fw-bold" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger px-4 rounded-pill fw-bold" id="btn-confirmar-eliminar">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         
+    </main>
+        
     
-    </main>    
     <footer class="bg-dark text-light py-4 mt-auto">
         <div class="container text-center">
             <p>&copy; 2026 HuertoHogar - PROYECTO DSY 1104. Todos los derechos reservados.</p>

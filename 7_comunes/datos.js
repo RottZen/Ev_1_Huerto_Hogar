@@ -303,8 +303,45 @@ function buscarPedido() {
 /* ------------------------------------------------------------
    4. INICIALIZACIÓN
    ------------------------------------------------------------ */
+function actualizarNavbarSegunSesion() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
+    if (usuario && usuario.sesionActiva) {
+        // Actualizar botón "Mi Cuenta"
+        const botonesMiCuenta = document.querySelectorAll('a[href*="registro.html"]');
+        botonesMiCuenta.forEach(btn => {
+            if (usuario.rol === "admin") {
+                btn.href = "../8_admin/admin.html";
+                btn.textContent = "Panel de Control";
+            } else {
+                btn.href = "../5_perfil/perfil.html";
+                btn.textContent = "Mi Perfil";
+            }
+        });
+
+        // Añadir botón Cerrar Sesión para cualquier usuario loggeado
+        const navbarNav = document.querySelector(".navbar-nav");
+        if (navbarNav && !document.getElementById("nav-logout-btn")) {
+            const li = document.createElement("li");
+            li.className = "nav-item";
+            li.innerHTML = `<a id="nav-logout-btn" class="nav-link text-danger" href="#" onclick="cerrarSesion()">Cerrar Sesión</a>`;
+            navbarNav.appendChild(li);
+        }
+    }
+}
+
+window.cerrarSesion = function() {
+    const usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
+    if (usuario) {
+        usuario.sesionActiva = false;
+        localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
+    }
+    window.location.href = "../1_inicio/index.html";
+};
 
 document.addEventListener("DOMContentLoaded", () => {
+    actualizarNavbarSegunSesion();
+    actualizarContadorCarrito();
+    
     // 1. Obtener o crear usuario por defecto para mantener sesión activa
     let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
 

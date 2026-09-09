@@ -1,8 +1,8 @@
-.img-admin-miniatura{
-    width: 50px;
-    height: auto;
+.img-admin-miniatura {
+    width: 40px;
+    height: 40px;
     object-fit: cover;
-    border-radius: 8px;
+    border-radius: 6px;
     border: 1px solid #ccc;
 }
 

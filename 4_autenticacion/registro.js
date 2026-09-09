@@ -1,26 +1,3 @@
-const usuariosBase = [
-    {
-        email: "admin@huertohogar.cl",
-        password: "admin123",
-        nombre: "Administrador Principal",
-        telefono: "+56 9 1111 2222",
-        direccion: "Oficina Central HuertoHogar",
-        ciudad: "Santiago",
-        puntos: 1000,
-        rol: "admin"
-    },
-    {
-        email: "cliente@correo.com",
-        password: "cliente123",
-        nombre: "Juan Pérez",
-        telefono: "+56 9 8765 4321",
-        direccion: "Av. Vicuña Mackenna 4860, San Joaquín",
-        ciudad: "Santiago",
-        puntos: 250,
-        rol: "cliente"
-    }
-];
-
 document.addEventListener("DOMContentLoaded", () => {
     const formLogin = document.getElementById("form-login");
     const formRegistro = document.getElementById("form-registro");
@@ -33,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const emailIngresado = document.getElementById("login-email").value.trim();
             const passIngresada = document.getElementById("login-password").value.trim();
 
-            // Buscar coincidencia en usuariosBase
+            // Buscar coincidencia en usuariosBase (que viene de datos.js)
             const usuarioEncontrado = usuariosBase.find(
                 u => u.email.toLowerCase() === emailIngresado.toLowerCase() && u.password === passIngresada
             );
@@ -52,9 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // REDIRECCIÓN SEGÚN EL ROL
                 if (sesionUsuario.rol === "admin") {
-                    window.location.href = "../admin/admin.html"; // Ajusta la ruta exacta a tu vista de admin
+                    window.location.href = "../8_admin/admin.html";
                 } else {
-                    window.location.href = "../5_perfil/perfil.html";
+                    window.location.href = "../2_catalogo/catalogo.html";
                 }
             } else {
                 alert("Correo o contraseña incorrectos. Inténtalo de nuevo.");
