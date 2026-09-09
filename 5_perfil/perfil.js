@@ -1,37 +1,57 @@
 document.addEventListener("DOMContentLoaded", () => {
-    cargarDatosUsuario();
+    // 1. Obtener o crear usuario por defecto para mantener sesión activa
+    let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
+
+    if (!usuario) {
+        usuario = {
+            nombre: "Juan Pérez",
+            email: "juan.perez@email.cl",
+            telefono: "+56 9 8765 4321",
+            direccion: "Av. Vicuña Mackenna 4860, San Joaquín",
+            ciudad: "Santiago",
+            puntos: 250
+        };
+        localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
+    }
+    renderizarDatosPerfil(usuario);
 
     const formPerfil = document.getElementById("form-perfil");
     if (formPerfil) {
         formPerfil.addEventListener("submit", (e) => {
             e.preventDefault();
-            
-            // Obtener el usuario actual y actualizar con los nuevos datos del formulario
-            const usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar")) || {};
-            usuario.nombre = document.getElementById("perfil-nombre").value.trim();
-            usuario.telefono = document.getElementById("perfil-telefono").value.trim();
-            usuario.direccion = document.getElementById("perfil-direccion").value.trim();
-            usuario.ciudad = document.getElementById("perfil-ciudad").value;
 
-            localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
-            
-            // Volver a renderizar la vista actualizada
-            cargarDatosUsuario();
-            alert("Tus datos han sido actualizados exitosamente.");
+            // Leer nuevos s
+            const usuarioActualizado = {
+                ...usuario,
+                nombre: document.getElementById("perfil-nombre").value.trim(),
+                telefono: document.getElementById("perfil-telefono").value.trim(),
+                direccion: document.getElementById("perfil-direccion").value.trim(),
+                ciudad: document.getElementById("perfil-ciudad").value
+            };
+
+            // Guardar permanentemente en localStorage
+            localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuarioActualizado));
+
+            // Actualizar vista
+            renderizarDatosPerfil(usuarioActualizado);
+            alert("¡Tus datos han sido guardados y actualizados con éxito!");
         });
     }
 });
 
-function cargarDatosUsuario() {
-    const usuarioGuardado = localStorage.getItem("usuarioHuertoHogar");
-    if (!usuarioGuardado) return;
+function renderizarDatosPerfil(usuario) {
+    if (!usuario) return;
 
-    const usuario = JSON.parse(usuarioGuardado);
 
     const avatar = document.querySelector(".avatar-circle");
     if (avatar && usuario.nombre) {
-        const iniciales = usuario.nombre.split(" ").map(n => n[0]).join("").substring(0, 2).toUpperCase();
-        avatar.textContent = iniciales;
+        const iniciales = usuario.nombre
+            .split(" ")
+            .map(n => n[0])
+            .join("")
+            .substring(0, 2)
+            .toUpperCase();
+        avatar.textContent = iniciales || "U";
     }
 
     const elemNombre = document.querySelector(".card-perfil-resumen h3");
@@ -40,15 +60,13 @@ function cargarDatosUsuario() {
     const elemEmail = document.querySelector(".card-perfil-resumen span:nth-of-type(1)");
     if (elemEmail) elemEmail.textContent = usuario.email;
 
-    const elemTelResumen = document.querySelector(".card-perfil-resumen span:nth-of-type(2)");
-    if (elemTelResumen) elemTelResumen.textContent = usuario.telefono;
+    const elemTel = document.querySelector(".card-perfil-resumen span:nth-of-type(2)");
+    if (elemTel) elemTel.textContent = usuario.telefono;
 
     const elemPuntos = document.querySelector(".card-perfil-resumen h4");
     if (elemPuntos && usuario.puntos !== undefined) {
         elemPuntos.textContent = `${usuario.puntos} Puntos`;
     }
-
-    // Actualizar Campos del Formulario
     const inputNombre = document.getElementById("perfil-nombre");
     if (inputNombre) inputNombre.value = usuario.nombre || "";
 
