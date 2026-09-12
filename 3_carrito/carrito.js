@@ -1,7 +1,9 @@
 function renderizarTablaCarrito() {
     const tabla = document.getElementById("tabla-carrito");
     const carrito = obtenerCarrito(); 
-
+    if (!tabla) {
+        return;
+    }
     tabla.innerHTML = ""; 
 
     if (carrito.length === 0) {
