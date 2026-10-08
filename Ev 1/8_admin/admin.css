@@ -1,0 +1,16 @@
+.img-admin-miniatura {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+body{
+    background-color: #f8f9fa;
+
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(46, 139, 87, 0.05);
+}

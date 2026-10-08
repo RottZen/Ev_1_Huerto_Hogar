@@ -115,6 +115,9 @@ const productos = [
 ];
  
  
+/* ------------------------------------------------------------
+   2. FUNCIONES DEL CARRITO DE COMPRAS
+   ------------------------------------------------------------ */
  
 function obtenerCarrito() {
     const carritoGuardado = localStorage.getItem("carritoHuertoHogar");
@@ -184,6 +187,11 @@ function actualizarContadorCarrito() {
 }
  
  
+/* ------------------------------------------------------------
+   3. FUNCIONES DE RENDERIZADO (mostrar datos en el HTML)
+   ------------------------------------------------------------ */
+ 
+// Dibuja las tarjetas de productos (Bootstrap) en catalogo.html
 function renderizarProductos(listaProductos = productos) {
     const contenedor = document.querySelector(".grid-productos");
     if (!contenedor) return;
@@ -227,6 +235,8 @@ function filtrarPorCategoria(categoria) {
     }
 }
  
+// Dibuja el contenido del carrito en páginas que usen .lista-carrito
+// (si carrito.html usa su propia tabla Bootstrap, ver carrito.js en su lugar)
 function renderizarCarrito() {
     const contenedor = document.querySelector(".lista-carrito");
     if (!contenedor) return;
@@ -258,6 +268,7 @@ function renderizarCarrito() {
     }
 }
 
+// Simulación de una base de datos de pedidos
 const baseDePedidos = {
     "HH-12345": { estado: "En Camino", detalle: "Su pedido ha salido de la bodega central y llegará a su domicilio en 24-48 horas." },
     "HH-99999": { estado: "Entregado", detalle: "Su pedido fue entregado satisfactoriamente el día 20/05/2024." },
@@ -270,7 +281,7 @@ function buscarPedido() {
     const estadoSpan = document.getElementById('estado-pedido');
     const detalleP = document.getElementById('detalle-pedido');
 
-    
+    // Limpiar resultados anteriores
     resDiv.classList.add('d-none');
 
     if (baseDePedidos[input]) {
@@ -289,6 +300,9 @@ function buscarPedido() {
 
  
  
+/* ------------------------------------------------------------
+   4. INICIALIZACIÓN
+   ------------------------------------------------------------ */
 function actualizarNavbarSegunSesion() {
     const usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
     if (usuario && usuario.sesionActiva) {
@@ -328,7 +342,7 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarNavbarSegunSesion();
     actualizarContadorCarrito();
     
-
+    // 1. Obtener o crear usuario por defecto para mantener sesión activa
     let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
 
     if (!usuario) {
@@ -343,14 +357,16 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
     }
 
-   
+    // 2. Renderizar los datos guardados en la interfaz
     renderizarDatosPerfil(usuario);
 
+    // 3. Escuchar la actualización del formulario
     const formPerfil = document.getElementById("form-perfil");
     if (formPerfil) {
         formPerfil.addEventListener("submit", (e) => {
             e.preventDefault();
 
+            // Leer nuevos datos ingresados
             const usuarioActualizado = {
                 ...usuario,
                 nombre: document.getElementById("perfil-nombre").value.trim(),
@@ -359,7 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 ciudad: document.getElementById("perfil-ciudad").value
             };
 
-            
+            // Guardar permanentemente en localStorage
             localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuarioActualizado));
 
             // Actualizar vista
@@ -372,7 +388,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function renderizarDatosPerfil(usuario) {
     if (!usuario) return;
 
-    
+    // Actualizar Iniciales en Avatar
     const avatar = document.querySelector(".avatar-circle");
     if (avatar && usuario.nombre) {
         const iniciales = usuario.nombre
@@ -384,7 +400,7 @@ function renderizarDatosPerfil(usuario) {
         avatar.textContent = iniciales || "U";
     }
 
-   
+    // Actualizar tarjeta de resumen izquierda
     const elemNombre = document.querySelector(".card-perfil-resumen h3");
     if (elemNombre) elemNombre.textContent = usuario.nombre;
 
@@ -399,7 +415,7 @@ function renderizarDatosPerfil(usuario) {
         elemPuntos.textContent = `${usuario.puntos} Puntos`;
     }
 
-    
+    // Cargar valores dentro del formulario derecha
     const inputNombre = document.getElementById("perfil-nombre");
     if (inputNombre) inputNombre.value = usuario.nombre || "";
 
