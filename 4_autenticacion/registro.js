@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const formLogin = document.getElementById("form-login");
     const formRegistro = document.getElementById("form-registro");
 
-    // LOGIN
+   
     if (formLogin) {
         formLogin.addEventListener("submit", (e) => {
             e.preventDefault();
@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const emailIngresado = document.getElementById("login-email").value.trim();
             const passIngresada = document.getElementById("login-password").value.trim();
 
-            // Buscar coincidencia en usuariosBase (que viene de datos.js)
+           
             const usuarioEncontrado = usuariosBase.find(
                 u => u.email.toLowerCase() === emailIngresado.toLowerCase() && u.password === passIngresada
             );
@@ -22,12 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     historialCompras: usuarioEncontrado.historialCompras || []
                 };
 
-                // Guardar usuario en localStorage
+                
                 localStorage.setItem("usuarioHuertoHogar", JSON.stringify(sesionUsuario));
 
                 alert(`¡Bienvenido/a ${sesionUsuario.nombre}!`);
 
-                // REDIRECCIÓN SEGÚN EL ROL
+               
                 if (sesionUsuario.rol === "admin") {
                     window.location.href = "../8_admin/admin.html";
                 } else {
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // REGISTRO (Siempre crea usuarios con rol 'cliente')
+    
     if (formRegistro) {
         formRegistro.addEventListener("submit", (e) => {
             e.preventDefault();

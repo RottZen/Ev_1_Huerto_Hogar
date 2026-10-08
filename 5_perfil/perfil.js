@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Obtener usuario o crear uno base con compras iniciales
     let usuario = JSON.parse(localStorage.getItem("usuarioHuertoHogar"));
 
     if (!usuario) {
@@ -19,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
     }
 
-    // Asegurar que exista el arreglo de historial
+   
     if (!usuario.historialCompras) {
         usuario.historialCompras = [
             { id: "#HH-1092", fecha: "02/09/2026", total: "$12.500 CLP", estado: "Entregado" }
@@ -27,11 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("usuarioHuertoHogar", JSON.stringify(usuario));
     }
 
-    // 2. Renderizar Datos de Usuario y Compras
     renderizarDatosPerfil(usuario);
     renderizarHistorialCompras(usuario.historialCompras);
 
-    // 3. Guardar Formulario de Perfil
+   
     const formPerfil = document.getElementById("form-perfil");
     if (formPerfil) {
         formPerfil.addEventListener("submit", (e) => {
@@ -49,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 4. Cerrar Sesión
+    
     const btnCerrarSesion = document.getElementById("btn-cerrar-sesion");
     if (btnCerrarSesion) {
         btnCerrarSesion.addEventListener("click", () => {
@@ -93,7 +91,7 @@ function renderizarDatosPerfil(usuario) {
         elemPuntos.textContent = `${usuario.puntos} Puntos`;
     }
 
-    // Inputs
+  
     const inputNombre = document.getElementById("perfil-nombre");
     if (inputNombre) inputNombre.value = usuario.nombre || "";
 
@@ -107,7 +105,7 @@ function renderizarDatosPerfil(usuario) {
     if (selectCiudad && usuario.ciudad) selectCiudad.value = usuario.ciudad;
 }
 
-// Función para pintar la tabla de compras dinámica
+
 function renderizarHistorialCompras(compras) {
     const tbody = document.querySelector("table tbody");
     if (!tbody) return;
