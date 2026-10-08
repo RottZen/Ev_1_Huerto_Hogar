@@ -1,0 +1,157 @@
+.navbar {
+  background-color: #2e7d32;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  padding: 0.8rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.4rem;
+  color: #ffffff !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.brand:hover {
+  color: #d8f3dc !important;
+  opacity: 0.9;
+}
+
+.toggler {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  filter: invert(1);
+}
+
+.navLink {
+  color: #e8f5e9 !important;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 0.5rem 0.8rem !important;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+}
+
+.navLink:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.adminLink {
+  color: #ffe082 !important;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.5rem 0.8rem !important;
+  border-radius: 6px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  text-decoration: none;
+}
+
+.adminLink:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 224, 130, 0.25);
+}
+
+.cartButton {
+  background-color: #1b5e20;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: background-color 0.2s ease;
+}
+
+.cartButton:hover {
+  background-color: #154718;
+  color: #ffffff;
+}
+
+.cartText {
+  display: inline;
+}
+
+.cartBadge {
+  background-color: #e63946;
+  color: #ffffff;
+  font-size: 0.75rem;
+  padding: 0.25em 0.55em;
+  margin-left: 0.3rem;
+}
+
+.userSection {
+  color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+}
+
+.userEmail {
+  font-size: 0.9rem;
+  font-weight: 500;
+  max-width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.logoutBtn {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  font-size: 0.85rem;
+  border-radius: 6px;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.logoutBtn:hover {
+  background-color: #d32f2f;
+  border-color: #d32f2f;
+  color: #ffffff;
+}
+
+.loginBtn {
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #ffffff;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.loginBtn:hover {
+  background-color: #ffffff;
+  color: #2e7d32;
+}
+
+.registerBtn {
+  background-color: #81c784;
+  color: #1b5e20;
+  border: 1px solid #81c784;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.registerBtn:hover {
+  background-color: #a5d6a7;
+  color: #1b5e20;
+}
