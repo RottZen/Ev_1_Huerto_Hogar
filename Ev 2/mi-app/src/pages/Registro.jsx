@@ -197,7 +197,7 @@ const Registro = () => {
           )}
 
           <button type="submit" className={styles.submitBtn}>
-            Crear mi Cuenta 🌿
+            Crear mi Cuenta 
           </button>
         </form>
 

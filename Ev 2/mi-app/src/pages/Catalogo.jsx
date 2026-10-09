@@ -1,105 +1,65 @@
 import { useContext, useState, useMemo } from 'react';
 import { ProductContext } from '../context/ProductContext';
 import ProductCard from '../components/ProductCard';
-import styles from './Catalogo.module.css';
 
 const Catalogo = () => {
   const { products } = useContext(ProductContext);
   const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState('default');
+  const [activeCategory, setActiveCategory] = useState('todos');
 
-  // Filter and sort products
   const filteredProducts = useMemo(() => {
-    if (!products) return [];
-
-    let list = products.filter((p) => {
-      const matchName = p.name?.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchDesc = p.description?.toLowerCase().includes(searchTerm.toLowerCase());
-      return matchName || matchDesc;
-    });
-
-    if (sortBy === 'price-asc') {
-      list.sort((a, b) => a.price - b.price);
-    } else if (sortBy === 'price-desc') {
-      list.sort((a, b) => b.price - a.price);
-    } else if (sortBy === 'name-asc') {
-      list.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+    let result = products;
+    if (activeCategory !== 'todos') {
+      result = result.filter(p => p.categoria === activeCategory);
     }
-
-    return list;
-  }, [products, searchTerm, sortBy]);
-
-  const handleClearFilters = () => {
-    setSearchTerm('');
-    setSortBy('default');
-  };
+    if (searchTerm.trim() !== '') {
+      result = result.filter(p => p.name.toLowerCase().includes(searchTerm.trim().toLowerCase()));
+    }
+    return result;
+  }, [products, searchTerm, activeCategory]);
 
   return (
-    <div className={styles.catalogoContainer}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Catálogo de Productos</h1>
-        <p className={styles.subtitle}>
-          Explora nuestra selección completa de insumos, semillas y herramientas para tu huerto
-        </p>
-      </header>
-
-      {/* Search and Sort controls */}
-      <div className={styles.filterCard}>
-        <div className={styles.controlsRow}>
-          <div className={styles.searchWrapper}>
-            <span className={styles.searchIcon}>🔍</span>
-            <input
-              type="text"
-              placeholder="Buscar productos por nombre o descripción..."
-              className={styles.searchInput}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              aria-label="Buscar productos"
-            />
-          </div>
-
-          <select
-            className={styles.sortSelect}
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            aria-label="Ordenar productos"
-          >
-            <option value="default">Orden por defecto</option>
-            <option value="price-asc">Precio: Menor a Mayor</option>
-            <option value="price-desc">Precio: Mayor a Menor</option>
-            <option value="name-asc">Nombre: A - Z</option>
-          </select>
-
-          <div className={styles.countBadge}>
-            {filteredProducts.length} {filteredProducts.length === 1 ? 'producto' : 'productos'}
-          </div>
+    <main className="container my-5 flex-grow-1">
+        <div className="text-center p-5 mb-5 rounded-4 shadow-sm bg-light">
+            <h2 className="fw-bold text-success mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>Nuestro Catálogo</h2>
+            <p className="text-secondary lead mb-0">Productos frescos, directo desde el campo hasta tu mesa.</p>
         </div>
-      </div>
 
-      {/* Product Grid or Empty State */}
-      {filteredProducts.length > 0 ? (
-        <div className={styles.grid}>
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+        <div className="row mb-4 g-3 align-items-center">
+            <div className="col-md-5">
+                <input
+                    type="text"
+                    id="buscador-productos"
+                    className="form-control"
+                    placeholder="Buscar producto... (ej: manzanas)"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </div>
+
+            <div className="col-md-7 text-md-end">
+                <div className="btn-group flex-wrap" role="group">
+                    <button className={`btn btn-outline-success ${activeCategory === 'todos' ? 'active' : ''}`} onClick={() => setActiveCategory('todos')}>Todos</button>
+                    <button className={`btn btn-outline-success ${activeCategory === 'frutas' ? 'active' : ''}`} onClick={() => setActiveCategory('frutas')}>Frutas Frescas</button>
+                    <button className={`btn btn-outline-success ${activeCategory === 'verduras' ? 'active' : ''}`} onClick={() => setActiveCategory('verduras')}>Verduras Orgánicas</button>
+                    <button className={`btn btn-outline-success ${activeCategory === 'organicos' ? 'active' : ''}`} onClick={() => setActiveCategory('organicos')}>Productos Orgánicos</button>
+                    <button className={`btn btn-outline-success ${activeCategory === 'lacteos' ? 'active' : ''}`} onClick={() => setActiveCategory('lacteos')}>Productos Lácteos</button>
+                </div>
+            </div>
         </div>
-      ) : (
-        <div className={styles.emptyState}>
-          <span className={styles.emptyIcon}>🌱</span>
-          <h2 className={styles.emptyTitle}>No encontramos productos</h2>
-          <p className={styles.emptyText}>
-            Intenta con otro término de búsqueda o restablece los filtros.
-          </p>
-          <button
-            type="button"
-            className={styles.btnReset}
-            onClick={handleClearFilters}
-          >
-            Restablecer Búsqueda
-          </button>
+
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4 grid-productos">
+            {filteredProducts.length === 0 ? (
+                <div className="col-12"><p className="text-center text-secondary">No se encontraron productos.</p></div>
+            ) : (
+                filteredProducts.map(product => (
+                    <div className="col" key={product.id}>
+                        <ProductCard product={product} />
+                    </div>
+                ))
+            )}
         </div>
-      )}
-    </div>
+    </main>
   );
 };
 

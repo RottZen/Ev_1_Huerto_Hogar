@@ -8,6 +8,8 @@ import Carrito from './pages/Carrito';
 import Login from './pages/Login';
 import Registro from './pages/Registro';
 import Admin from './pages/Admin';
+import Perfil from './pages/Perfil';
+import Seguimiento from './pages/Seguimiento';
 import { AuthContext } from './context/AuthContext';
 import './App.css';
 
@@ -33,7 +35,9 @@ function App() {
             <Route path="/catalogo" element={<Catalogo />} />
             <Route path="/carrito" element={<Carrito />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/registro" element={<Registro />} />
+            <Route path="/registro" element={<Navigate to="/login" replace />} />
+            <Route path="/perfil" element={<Perfil />} />
+            <Route path="/seguimiento" element={<Seguimiento />} />
             <Route 
               path="/admin" 
               element={

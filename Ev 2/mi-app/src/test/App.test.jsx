@@ -12,7 +12,7 @@ const AuthTestComponent = () => {
     <div>
       <div data-testid="user">{user ? user.email : 'No user'}</div>
       <div data-testid="role">{user ? user.role : 'No role'}</div>
-      <button onClick={() => login('admin@admin.com', 'admin123')}>Login Admin</button>
+      <button onClick={() => login('admin@huertohogar.cl', 'admin123')}>Login Admin</button>
       <button onClick={() => register('test@test.com', '123')}>Register User</button>
       <button onClick={() => logout()}>Logout</button>
     </div>
@@ -69,7 +69,7 @@ describe('Contexts', () => {
       await act(async () => {
         screen.getByText('Login Admin').click();
       });
-      expect(screen.getByTestId('user')).toHaveTextContent('admin@admin.com');
+      expect(screen.getByTestId('user')).toHaveTextContent('admin@huertohogar.cl');
       expect(screen.getByTestId('role')).toHaveTextContent('admin');
     });
 
@@ -173,7 +173,7 @@ describe('Contexts', () => {
         </ProductProvider>
       );
       // default products are 3
-      expect(screen.getByTestId('products-length')).toHaveTextContent('3');
+      expect(screen.getByTestId('products-length')).toHaveTextContent('9');
     });
 
     it('10. should add product and delete product', async () => {
@@ -185,12 +185,12 @@ describe('Contexts', () => {
       await act(async () => {
         screen.getByText('Add Product').click();
       });
-      expect(screen.getByTestId('products-length')).toHaveTextContent('4');
+      expect(screen.getByTestId('products-length')).toHaveTextContent('10');
 
       await act(async () => {
         screen.getByText('Delete First').click();
       });
-      expect(screen.getByTestId('products-length')).toHaveTextContent('3');
+      expect(screen.getByTestId('products-length')).toHaveTextContent('9');
     });
   });
 });

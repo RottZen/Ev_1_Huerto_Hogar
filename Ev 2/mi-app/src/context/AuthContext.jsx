@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = (email, password) => {
     // Mock login
-    if (email === 'admin@admin.com' && password === 'admin123') {
+    if (email === 'admin@huertohogar.cl' && password === 'admin123') {
       setUser({ email, role: 'admin' });
       return { success: true };
     } else if (email && password) {

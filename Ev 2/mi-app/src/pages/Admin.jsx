@@ -1,283 +1,219 @@
 import { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { ProductContext } from '../context/ProductContext';
-import styles from './Admin.module.css';
+import { Navigate } from 'react-router-dom';
 
 const Admin = () => {
   const { user } = useContext(AuthContext);
-  const { products, addProduct, deleteProduct } = useContext(ProductContext);
+  const { products, addProduct, updateProduct, deleteProduct } = useContext(ProductContext);
 
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const [formData, setFormData] = useState({
-    name: '',
-    price: '',
-    description: '',
-    image: '',
+      codigo: '', nombre: '', categoria: 'frutas', price: '', stock: '', unidad: '', image: '/assets/img/logo.png'
   });
 
-  const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState('');
-
-  // Double-check protection if user navigated directly without admin role
   if (!user || user.role !== 'admin') {
-    return (
-      <div className={styles.adminContainer}>
-        <div className={styles.unauthorizedCard}>
-          <h2 className={styles.unauthorizedTitle}>Acceso Restringido 🔒</h2>
-          <p className={styles.unauthorizedText}>
-            Debes iniciar sesión con una cuenta de Administrador para ver y gestionar este panel.
-          </p>
-          <Link to="/login" className={styles.btnBack}>
-            Ir a Iniciar Sesión
-          </Link>
-        </div>
-      </div>
-    );
+    return <Navigate to="/" replace />;
   }
 
-  const validate = () => {
-    const newErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = 'El nombre del producto es obligatorio.';
-    } else if (formData.name.trim().length < 3) {
-      newErrors.name = 'El nombre debe tener al menos 3 caracteres.';
-    }
-
-    if (!formData.price) {
-      newErrors.price = 'El precio es obligatorio.';
-    } else {
-      const numPrice = Number(formData.price);
-      if (isNaN(numPrice) || numPrice <= 0) {
-        newErrors.price = 'El precio debe ser un número mayor a 0.';
-      }
-    }
-
-    if (!formData.description.trim()) {
-      newErrors.description = 'La descripción es obligatoria.';
-    } else if (formData.description.trim().length < 5) {
-      newErrors.description = 'La descripción debe tener al menos 5 caracteres.';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+  const handleOpenEdit = (product) => {
+      setSelectedProduct(product);
+      setFormData({ ...product });
+      setShowEditModal(true);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
-    }
+  const handleOpenDelete = (product) => {
+      setSelectedProduct(product);
+      setShowDeleteModal(true);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (!validate()) {
-      return;
-    }
-
-    const newProduct = {
-      name: formData.name.trim(),
-      price: Number(formData.price),
-      description: formData.description.trim(),
-      image: formData.image.trim() || 'https://via.placeholder.com/150',
-    };
-
-    addProduct(newProduct);
-    setSuccessMessage(`Producto "${newProduct.name}" agregado exitosamente.`);
-
-    // Reset form
-    setFormData({
-      name: '',
-      price: '',
-      description: '',
-      image: '',
-    });
-
-    // Clear success message after 4 seconds
-    setTimeout(() => {
-      setSuccessMessage('');
-    }, 4000);
+  const handleAddSubmit = (e) => {
+      e.preventDefault();
+      addProduct({
+          codigo: formData.codigo,
+          name: formData.nombre,
+          categoria: formData.categoria,
+          price: Number(formData.price),
+          stock: Number(formData.stock),
+          unidad: formData.unidad,
+          image: formData.image
+      });
+      setShowAddModal(false);
+      setFormData({ codigo: '', nombre: '', categoria: 'frutas', price: '', stock: '', unidad: '', image: '/assets/img/logo.png' });
   };
 
-  const handleDelete = (id, name) => {
-    const confirmDelete = window.confirm(`¿Estás seguro de que deseas eliminar el producto "${name}"?`);
-    if (confirmDelete) {
-      deleteProduct(id);
-      setSuccessMessage(`Producto "${name}" eliminado correctamente.`);
-      setTimeout(() => {
-        setSuccessMessage('');
-      }, 4000);
-    }
+  const handleEditSubmit = (e) => {
+      e.preventDefault();
+      updateProduct(selectedProduct.id, {
+          ...selectedProduct,
+          name: formData.nombre,
+          price: Number(formData.price)
+      });
+      setShowEditModal(false);
   };
 
-  const formatPrice = (val) => {
-    return `$${(val || 0).toLocaleString('es-CL')}`;
+  const confirmDelete = () => {
+      deleteProduct(selectedProduct.id);
+      setShowDeleteModal(false);
   };
 
   return (
-    <div className={styles.adminContainer}>
-      <header className={styles.header}>
-        <div className={styles.titleWrapper}>
-          <h1 className={styles.title}>Panel de Administración</h1>
-          <p className={styles.subtitle}>
-            Gestión de inventario y catálogo de HuertoHogar
-          </p>
-        </div>
-        <div className={styles.adminBadge}>
-          <span>🛡️</span> Administrador: {user.email}
-        </div>
-      </header>
+    <>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+          <div>
+              <h2 className="fw-bold fs-4 mb-0" style={{ fontFamily: "'Playfair Display', serif", color: "#198754" }}>Gestión de Productos</h2>
+              <p className="text-muted small mb-0">Administra el inventario y catálogo de HuertoHogar</p>
+          </div>
+          <button className="btn btn-success btn-sm shadow-sm rounded-pill px-3 fw-bold" onClick={() => setShowAddModal(true)}>+ Nuevo Producto</button>
+      </div>
 
-      {successMessage && (
-        <div className={styles.successBanner} role="status">
-          <span>✅</span>
-          <span>{successMessage}</span>
-        </div>
+      <div className="card shadow-sm border-0 rounded-4">
+          <div className="card-body p-0">
+              <div className="table-responsive">
+                  <table className="table table-hover table-sm align-middle mb-0" style={{ fontSize: "0.9rem" }}>
+                      <thead className="bg-success text-white">
+                          <tr>
+                              <th className="ps-3 rounded-top-left py-2">Cod.</th>
+                              <th className="py-2">Imagen</th>
+                              <th className="py-2">Nombre</th>
+                              <th className="py-2">Categoría</th>
+                              <th className="py-2">Precio</th>
+                              <th className="py-2">Stock</th>
+                              <th className="text-center rounded-top-right py-2">Acciones</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {products.map(p => (
+                              <tr key={p.id}>
+                                  <td className="ps-3 fw-bold text-secondary">{p.codigo || p.id}</td>
+                                  <td>
+                                      <img src={p.image || 'https://via.placeholder.com/50'} alt={p.name} className="rounded" style={{ width: "40px", height: "40px", objectFit: "cover" }} />
+                                  </td>
+                                  <td className="fw-semibold">{p.name}</td>
+                                  <td><span className="badge bg-light text-dark border">{p.categoria || 'N/A'}</span></td>
+                                  <td className="text-success fw-bold">${p.price?.toLocaleString('es-CL')}</td>
+                                  <td>{p.stock || 0} {p.unidad || 'u'}</td>
+                                  <td className="text-center">
+                                      <button className="btn btn-sm btn-outline-primary me-1" onClick={() => handleOpenEdit(p)}>Editar</button>
+                                      <button className="btn btn-sm btn-outline-danger" onClick={() => handleOpenDelete(p)}>Eliminar</button>
+                                  </td>
+                              </tr>
+                          ))}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+
+      {/* Modal Nuevo Producto */}
+      {showAddModal && (
+          <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex="-1">
+              <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content border-0 shadow">
+                      <div className="modal-header bg-success text-white border-0">
+                          <h5 className="modal-title fw-bold">Agregar Nuevo Producto</h5>
+                          <button type="button" className="btn-close btn-close-white" onClick={() => setShowAddModal(false)}></button>
+                      </div>
+                      <div className="modal-body p-4">
+                          <form onSubmit={handleAddSubmit}>
+                              <div className="mb-3">
+                                  <label className="form-label text-muted small fw-bold">Código</label>
+                                  <input type="text" className="form-control" placeholder="Ej: FR004" required value={formData.codigo} onChange={e => setFormData({...formData, codigo: e.target.value})} />
+                              </div>
+                              <div className="mb-3">
+                                  <label className="form-label text-muted small fw-bold">Nombre</label>
+                                  <input type="text" className="form-control" placeholder="Ej: Frutillas Frescas" required value={formData.nombre} onChange={e => setFormData({...formData, nombre: e.target.value})} />
+                              </div>
+                              <div className="row mb-3">
+                                  <div className="col-6">
+                                      <label className="form-label text-muted small fw-bold">Categoría</label>
+                                      <select className="form-select" required value={formData.categoria} onChange={e => setFormData({...formData, categoria: e.target.value})}>
+                                          <option value="frutas">Frutas</option>
+                                          <option value="verduras">Verduras</option>
+                                          <option value="organicos">Orgánicos</option>
+                                          <option value="lacteos">Lácteos</option>
+                                      </select>
+                                  </div>
+                                  <div className="col-6">
+                                      <label className="form-label text-muted small fw-bold">Precio ($)</label>
+                                      <input type="number" className="form-control" required value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} />
+                                  </div>
+                              </div>
+                              <div className="row mb-3">
+                                  <div className="col-6">
+                                      <label className="form-label text-muted small fw-bold">Stock Inicial</label>
+                                      <input type="number" className="form-control" required value={formData.stock} onChange={e => setFormData({...formData, stock: e.target.value})} />
+                                  </div>
+                                  <div className="col-6">
+                                      <label className="form-label text-muted small fw-bold">Unidad (Ej: kg)</label>
+                                      <input type="text" className="form-control" required value={formData.unidad} onChange={e => setFormData({...formData, unidad: e.target.value})} />
+                                  </div>
+                              </div>
+                              <div className="mb-4">
+                                  <label className="form-label text-muted small fw-bold">URL de la Imagen</label>
+                                  <input type="text" className="form-control" required value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} />
+                              </div>
+                              <button type="submit" className="btn btn-success w-100 fw-bold rounded-pill">Guardar Producto en Catálogo</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
       )}
 
-      {/* Form Section */}
-      <section className={styles.card}>
-        <h2 className={styles.cardTitle}>
-          <span>➕</span> Agregar Nuevo Producto
-        </h2>
-
-        <form onSubmit={handleSubmit} noValidate>
-          <div className={styles.formGrid}>
-            <div className={styles.formGroup}>
-              <label htmlFor="prodName" className={styles.label}>
-                Nombre del Producto *
-              </label>
-              <input
-                id="prodName"
-                type="text"
-                name="name"
-                className={`${styles.input} ${errors.name ? styles.inputError : ''}`}
-                placeholder="Ej. Pala de Jardinería"
-                value={formData.name}
-                onChange={handleChange}
-              />
-              {errors.name && (
-                <span className={styles.errorMessage}>{errors.name}</span>
-              )}
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="prodPrice" className={styles.label}>
-                Precio ($ CLP) *
-              </label>
-              <input
-                id="prodPrice"
-                type="number"
-                name="price"
-                className={`${styles.input} ${errors.price ? styles.inputError : ''}`}
-                placeholder="Ej. 4500"
-                value={formData.price}
-                onChange={handleChange}
-                min="1"
-              />
-              {errors.price && (
-                <span className={styles.errorMessage}>{errors.price}</span>
-              )}
-            </div>
-
-            <div className={styles.formGroup}>
-              <label htmlFor="prodImage" className={styles.label}>
-                URL de Imagen (Opcional)
-              </label>
-              <input
-                id="prodImage"
-                type="url"
-                name="image"
-                className={styles.input}
-                placeholder="https://ejemplo.com/foto.jpg"
-                value={formData.image}
-                onChange={handleChange}
-              />
-            </div>
-
-            <div className={`${styles.formGroup} ${styles.fullWidth}`}>
-              <label htmlFor="prodDesc" className={styles.label}>
-                Descripción del Producto *
-              </label>
-              <textarea
-                id="prodDesc"
-                name="description"
-                className={`${styles.textarea} ${errors.description ? styles.inputError : ''}`}
-                placeholder="Describe las características y uso del producto..."
-                value={formData.description}
-                onChange={handleChange}
-              />
-              {errors.description && (
-                <span className={styles.errorMessage}>{errors.description}</span>
-              )}
-            </div>
+      {/* Modal Editar Producto */}
+      {showEditModal && (
+          <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex="-1">
+              <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content border-0 shadow">
+                      <div className="modal-header bg-primary text-white border-0">
+                          <h5 className="modal-title fw-bold">Editar Producto</h5>
+                          <button type="button" className="btn-close btn-close-white" onClick={() => setShowEditModal(false)}></button>
+                      </div>
+                      <div className="modal-body p-4">
+                          <form onSubmit={handleEditSubmit}>
+                              <div className="mb-3">
+                                  <label className="form-label text-muted small fw-bold">Nombre</label>
+                                  <input type="text" className="form-control" required value={formData.nombre} onChange={e => setFormData({...formData, nombre: e.target.value})} />
+                              </div>
+                              <div className="mb-4">
+                                  <label className="form-label text-muted small fw-bold">Precio ($)</label>
+                                  <input type="number" className="form-control" required value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} />
+                              </div>
+                              <button type="submit" className="btn btn-primary w-100 fw-bold rounded-pill">Guardar Cambios</button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
           </div>
+      )}
 
-          <button type="submit" className={styles.btnSubmit}>
-            <span>💾</span> Guardar Producto
-          </button>
-        </form>
-      </section>
-
-      {/* Product List Section */}
-      <section className={styles.card}>
-        <h2 className={styles.cardTitle}>
-          <span>📦</span> Inventario Actual ({products ? products.length : 0} productos)
-        </h2>
-
-        {products && products.length > 0 ? (
-          <div className={styles.tableWrapper}>
-            <table className={styles.table}>
-              <thead>
-                <tr>
-                  <th>Imagen</th>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Precio</th>
-                  <th>Descripción</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {products.map((p) => (
-                  <tr key={p.id}>
-                    <td>
-                      <img
-                        src={p.image || 'https://via.placeholder.com/50'}
-                        alt={p.name}
-                        className={styles.productThumbnail}
-                      />
-                    </td>
-                    <td>{p.id}</td>
-                    <td className={styles.productName}>{p.name}</td>
-                    <td className={styles.productPrice}>{formatPrice(p.price)}</td>
-                    <td>{p.description}</td>
-                    <td>
-                      <button
-                        type="button"
-                        className={styles.btnDelete}
-                        onClick={() => handleDelete(p.id, p.name)}
-                        aria-label={`Eliminar producto ${p.name}`}
-                      >
-                        <span>🗑️</span> Eliminar
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+      {/* Modal Eliminar Producto */}
+      {showDeleteModal && (
+          <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex="-1">
+              <div className="modal-dialog modal-dialog-centered">
+                  <div className="modal-content border-0 shadow">
+                      <div className="modal-header bg-danger text-white border-0">
+                          <h5 className="modal-title fw-bold">Confirmar Eliminación</h5>
+                          <button type="button" className="btn-close btn-close-white" onClick={() => setShowDeleteModal(false)}></button>
+                      </div>
+                      <div className="modal-body p-4 text-center">
+                          <p className="fs-5 mb-4">¿Estás seguro de querer eliminar este elemento?</p>
+                          <p className="text-muted fw-bold fs-5">{selectedProduct?.name}</p>
+                          <div className="d-flex justify-content-center gap-3 mt-4">
+                              <button type="button" className="btn btn-secondary px-4 rounded-pill fw-bold" onClick={() => setShowDeleteModal(false)}>Cancelar</button>
+                              <button type="button" className="btn btn-danger px-4 rounded-pill fw-bold" onClick={confirmDelete}>Eliminar</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
           </div>
-        ) : (
-          <div className={styles.noProducts}>
-            No hay productos registrados en el sistema. Agrega uno nuevo arriba.
-          </div>
-        )}
-      </section>
-    </div>
+      )}
+    </>
   );
 };
 

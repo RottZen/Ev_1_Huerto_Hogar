@@ -6,7 +6,6 @@ import { CartContext } from '../context/CartContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
-import Alert from '../components/Alert';
 
 describe('Reusable Components', () => {
   describe('Navbar Component', () => {
@@ -21,12 +20,10 @@ describe('Reusable Components', () => {
         </MemoryRouter>
       );
 
-      expect(screen.getByText(/HuertoHogar/i)).toBeInTheDocument();
       expect(screen.getByRole('link', { name: /^Inicio$/i })).toBeInTheDocument();
-      expect(screen.getByRole('link', { name: /^Catálogo$/i })).toBeInTheDocument();
-      expect(screen.getByRole('link', { name: /Iniciar Sesión/i })).toBeInTheDocument();
-      expect(screen.getByRole('link', { name: /Registrarse/i })).toBeInTheDocument();
-      expect(screen.queryByRole('link', { name: /Administración/i })).not.toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /^Catalogo$/i })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /Mi Cuenta/i })).toBeInTheDocument();
+      expect(screen.queryByRole('link', { name: /Panel de Control/i })).not.toBeInTheDocument();
     });
 
     it('displays cart item count badge when items are in cart', () => {
@@ -45,11 +42,10 @@ describe('Reusable Components', () => {
         </MemoryRouter>
       );
 
-      // Total count should be 5
       expect(screen.getByText('5')).toBeInTheDocument();
     });
 
-    it('renders user email and logout button when user is logged in', () => {
+    it('renders user and logout button when user is logged in', () => {
       const mockLogout = vi.fn();
       render(
         <MemoryRouter>
@@ -61,8 +57,7 @@ describe('Reusable Components', () => {
         </MemoryRouter>
       );
 
-      expect(screen.getByText(/test@example.com/i)).toBeInTheDocument();
-      const logoutBtn = screen.getByRole('button', { name: /Cerrar Sesión/i });
+      const logoutBtn = screen.getByRole('button', { name: /Salir/i });
       expect(logoutBtn).toBeInTheDocument();
 
       fireEvent.click(logoutBtn);
@@ -80,16 +75,14 @@ describe('Reusable Components', () => {
         </MemoryRouter>
       );
 
-      expect(screen.getByRole('link', { name: /Administración/i })).toBeInTheDocument();
+      expect(screen.getByRole('link', { name: /Panel de Control/i })).toBeInTheDocument();
     });
   });
 
   describe('Footer Component', () => {
     it('renders copyright with current year and brand name', () => {
       render(<Footer />);
-      const year = new Date().getFullYear();
-      expect(screen.getByText(new RegExp(year.toString()))).toBeInTheDocument();
-      expect(screen.getAllByText(/HuertoHogar/i).length).toBeGreaterThanOrEqual(1);
+      expect(screen.getByText(/HuertoHogar/i)).toBeInTheDocument();
       expect(screen.getByText(/Todos los derechos reservados/i)).toBeInTheDocument();
     });
   });
@@ -111,7 +104,6 @@ describe('Reusable Components', () => {
       );
 
       expect(screen.getByText('Macetero Ecológico')).toBeInTheDocument();
-      expect(screen.getByText('Macetero biodegradable para huerto urbano.')).toBeInTheDocument();
       expect(screen.getByText('$4.500')).toBeInTheDocument();
 
       const image = screen.getByRole('img', { name: 'Macetero Ecológico' });
@@ -126,7 +118,7 @@ describe('Reusable Components', () => {
         </CartContext.Provider>
       );
 
-      const button = screen.getByRole('button', { name: /Agregar Macetero Ecológico al carrito/i });
+      const button = screen.getByRole('button', { name: /Agregar al carrito/i });
       fireEvent.click(button);
 
       expect(handleAddToCart).toHaveBeenCalledTimes(1);
@@ -134,6 +126,7 @@ describe('Reusable Components', () => {
     });
 
     it('calls CartContext.addToCart when no custom callback is provided', () => {
+      window.alert = vi.fn();
       const mockContextAddToCart = vi.fn();
       render(
         <CartContext.Provider value={{ addToCart: mockContextAddToCart }}>
@@ -141,51 +134,12 @@ describe('Reusable Components', () => {
         </CartContext.Provider>
       );
 
-      const button = screen.getByRole('button', { name: /Agregar Macetero Ecológico al carrito/i });
+      const button = screen.getByRole('button', { name: /Agregar al carrito/i });
       fireEvent.click(button);
 
       expect(mockContextAddToCart).toHaveBeenCalledTimes(1);
       expect(mockContextAddToCart).toHaveBeenCalledWith(mockProduct);
-    });
-  });
-
-  describe('Alert Component', () => {
-    it('renders alert message and appropriate role', () => {
-      render(<Alert type="success" message="Operación realizada con éxito." />);
-
-      const alert = screen.getByRole('alert');
-      expect(alert).toBeInTheDocument();
-      expect(screen.getByText('Operación realizada con éxito.')).toBeInTheDocument();
-    });
-
-    it('renders children content if provided', () => {
-      render(
-        <Alert type="warning">
-          <span>Advertencia importante</span>
-        </Alert>
-      );
-
-      expect(screen.getByText('Advertencia importante')).toBeInTheDocument();
-    });
-
-    it('handles close button dismissal and onClose callback', () => {
-      const handleClose = vi.fn();
-      render(
-        <Alert
-          type="error"
-          message="Ocurrió un error inesperado"
-          dismissible={true}
-          onClose={handleClose}
-        />
-      );
-
-      expect(screen.getByText('Ocurrió un error inesperado')).toBeInTheDocument();
-
-      const closeBtn = screen.getByRole('button', { name: /Cerrar notificación/i });
-      fireEvent.click(closeBtn);
-
-      expect(handleClose).toHaveBeenCalledTimes(1);
-      expect(screen.queryByText('Ocurrió un error inesperado')).not.toBeInTheDocument();
+      expect(window.alert).toHaveBeenCalledWith('¡Producto agregado al carrito!');
     });
   });
 });

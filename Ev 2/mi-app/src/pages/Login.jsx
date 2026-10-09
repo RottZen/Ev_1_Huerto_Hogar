@@ -1,148 +1,108 @@
 import { useContext, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import styles from './Login.module.css';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState('login');
 
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
 
-  const [errors, setErrors] = useState({});
-  const [serverError, setServerError] = useState('');
+  const [regName, setRegName] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+  const [regConfirm, setRegConfirm] = useState('');
 
-  const validate = () => {
-    const newErrors = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!formData.email.trim()) {
-      newErrors.email = 'El correo electrónico es requerido.';
-    } else if (!emailRegex.test(formData.email.trim())) {
-      newErrors.email = 'Ingresa un formato de correo electrónico válido.';
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'La contraseña es requerida.';
-    } else if (formData.password.length < 4) {
-      newErrors.password = 'La contraseña debe tener al menos 4 caracteres.';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear error for that field as user types
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
-    }
-    if (serverError) {
-      setServerError('');
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleLoginSubmit = (e) => {
     e.preventDefault();
+    login(loginEmail, loginPassword);
+    alert(`¡Bienvenido/a ${loginEmail}!`);
+    navigate('/');
+  };
 
-    if (!validate()) {
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    if (regPassword !== regConfirm) {
+      alert("Las contraseñas no coinciden.");
       return;
     }
-
-    const result = login(formData.email.trim(), formData.password);
-
-    if (result.success) {
-      // If admin, navigate to admin or home
-      if (formData.email.trim() === 'admin@admin.com') {
-        navigate('/admin');
-      } else {
-        navigate('/');
-      }
-    } else {
-      setServerError(result.message || 'Credenciales inválidas. Verifica correo y contraseña.');
-    }
+    alert("¡Registro exitoso! Iniciando sesión...");
+    login(regEmail, regPassword);
+    navigate('/');
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <div className={styles.loginCard}>
-        <header className={styles.header}>
-          <h1 className={styles.title}>Iniciar Sesión</h1>
-          <p className={styles.subtitle}>
-            Ingresa a tu cuenta para continuar cultivando tu huerto
-          </p>
-        </header>
+    <main className="container my-5 flex-grow-1">
+        <div className="row justify-content-center">
+            <div className="col-md-6 col-lg-5">
+                <div className="card shadow-sm border-0 card-auth">
+                    <div className="card-body p-4">
+                        <ul className="nav nav-pills nav-justified mb-4" role="tablist">
+                            <li className="nav-item" role="presentation">
+                                <button className={`nav-link ${activeTab === 'login' ? 'active' : ''}`} onClick={() => setActiveTab('login')} type="button">Iniciar Sesión</button>
+                            </li>
+                            <li className="nav-item" role="presentation">
+                                <button className={`nav-link ${activeTab === 'registro' ? 'active' : ''}`} onClick={() => setActiveTab('registro')} type="button">Registrarse</button>
+                            </li>
+                        </ul>
 
-        {serverError && (
-          <div className={styles.errorBanner} role="alert">
-            <span>⚠️</span>
-            <span>{serverError}</span>
-          </div>
-        )}
+                        <div className="tab-content">
+                            {activeTab === 'login' && (
+                              <div className="tab-pane fade show active" role="tabpanel">
+                                  <h3 className="text-center mb-3">¡Bienvenido de vuelta!</h3>
+                                  <form onSubmit={handleLoginSubmit}>
+                                      <div className="mb-3">
+                                          <label className="form-label">Correo Electrónico</label>
+                                          <input type="email" className="form-control" placeholder="ejemplo@correo.cl" required value={loginEmail} onChange={e => setLoginEmail(e.target.value)} />
+                                      </div>
+                                      <div className="mb-3">
+                                          <label className="form-label">Contraseña</label>
+                                          <input type="password" className="form-control" placeholder="••••••••" required value={loginPassword} onChange={e => setLoginPassword(e.target.value)} />
+                                      </div>
+                                      <div className="d-flex justify-content-between align-items-center mb-3">
+                                          <div className="form-check">
+                                              <input type="checkbox" className="form-check-input" id="recordarme" />
+                                              <label className="form-check-label small" htmlFor="recordarme">Recordarme</label>
+                                          </div>
+                                          <a href="#" className="small text-decoration-none text-muted">¿Olvidaste tu contraseña?</a>
+                                      </div>
+                                      <button type="submit" className="btn btn-primary w-100 py-2 fw-semibold">Ingresar</button>
+                                  </form>
+                              </div>
+                            )}
 
-        <form onSubmit={handleSubmit} noValidate>
-          <div className={styles.formGroup}>
-            <label htmlFor="email" className={styles.label}>
-              Correo Electrónico
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-              placeholder="ejemplo@huertohogar.cl"
-              value={formData.email}
-              onChange={handleChange}
-              autoComplete="email"
-            />
-            {errors.email && (
-              <span className={styles.errorMessage}>{errors.email}</span>
-            )}
-          </div>
-
-          <div className={styles.formGroup}>
-            <label htmlFor="password" className={styles.label}>
-              Contraseña
-            </label>
-            <input
-              id="password"
-              type="password"
-              name="password"
-              className={`${styles.input} ${errors.password ? styles.inputError : ''}`}
-              placeholder="••••••••"
-              value={formData.password}
-              onChange={handleChange}
-              autoComplete="current-password"
-            />
-            {errors.password && (
-              <span className={styles.errorMessage}>{errors.password}</span>
-            )}
-          </div>
-
-          <button type="submit" className={styles.submitBtn}>
-            Ingresar a HuertoHogar
-          </button>
-        </form>
-
-        <p className={styles.footerText}>
-          ¿Aún no tienes cuenta?{' '}
-          <Link to="/registro" className={styles.link}>
-            Regístrate aquí
-          </Link>
-        </p>
-
-        <div className={styles.demoBox}>
-          <span className={styles.demoTitle}>💡 Credenciales de prueba:</span>
-          <div><strong>Admin:</strong> admin@admin.com / admin123</div>
-          <div><strong>Usuario:</strong> cualquier correo y contraseña válida</div>
+                            {activeTab === 'registro' && (
+                              <div className="tab-pane fade show active" role="tabpanel">
+                                  <h3 className="text-center mb-3">Crea tu cuenta</h3>
+                                  <form onSubmit={handleRegisterSubmit}>
+                                      <div className="mb-3">
+                                          <label className="form-label">Nombre Completo</label>
+                                          <input type="text" className="form-control" placeholder="Juan Pérez" required value={regName} onChange={e => setRegName(e.target.value)} />
+                                      </div>
+                                      <div className="mb-3">
+                                          <label className="form-label">Correo Electrónico</label>
+                                          <input type="email" className="form-control" placeholder="ejemplo@correo.cl" required value={regEmail} onChange={e => setRegEmail(e.target.value)} />
+                                      </div>
+                                      <div className="mb-3">
+                                          <label className="form-label">Contraseña</label>
+                                          <input type="password" className="form-control" placeholder="••••••••" required value={regPassword} onChange={e => setRegPassword(e.target.value)} />
+                                      </div>
+                                      <div className="mb-4">
+                                          <label className="form-label">Confirmar Contraseña</label>
+                                          <input type="password" className="form-control" placeholder="••••••••" required value={regConfirm} onChange={e => setRegConfirm(e.target.value)} />
+                                      </div>
+                                      <button type="submit" className="btn btn-primary w-100 py-2 fw-semibold">Crear Cuenta</button>
+                                  </form>
+                              </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
+    </main>
   );
 };
 
