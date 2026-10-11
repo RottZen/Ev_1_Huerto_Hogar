@@ -1,0 +1,27 @@
+.footer {
+  background-color: #1b4332;
+  color: #d8f3dc;
+  margin-top: auto;
+  border-top: 3px solid #2d6a4f;
+  padding: 1.5rem 0;
+}
+
+.brandTitle {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+.tagline {
+  margin: 0;
+  color: #b7e4c7;
+  font-size: 0.875rem;
+}
+
+.copyright {
+  margin: 0;
+  color: #d8f3dc;
+  font-size: 0.875rem;
+}

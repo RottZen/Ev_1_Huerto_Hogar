@@ -1,0 +1,212 @@
+/* tipografia */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@600;700&display=swap');
+
+/* variable colores of */
+:root{
+    --blanco-suave: #f6f6f6;
+    --verde-esmeralda: #2e8b57;
+    --amarillo-mostaza: #ffd700;
+    --marron-claro: #8B4513;
+    --gris-oscuro: #333333;
+    --gris-medio: #666666;
+
+}
+.logo-header{
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+}
+
+/* configuracion base */
+body{
+    background-color: var(--blanco-suave);
+    color : var(--gris-oscuro);
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3, h4{
+    font-family: 'Playfair Display', serif;
+    color: var(--marron-claro)
+}
+
+
+/* sobreescribir botones feos de bootstrap */
+
+.btn-primary{
+    background-color: var(--verde-esmeralda) !important;
+    border-color: var(--verde-esmeralda) !important;
+    color: white !important;
+}
+.btn-primary:hover{
+    background-color: #246b43 !important; /*mas oscurito pa q se note la interaccion */
+    border-color: #246b43 !important;
+}
+.btn-warning{
+    background-color: var(--amarillo-mostaza) !important;
+    border-color: var(--amarillo-mostaza) !important;
+    color: var(--gris-oscuro) !important;
+}
+
+/* Estandarización global de imágenes de tarjetas de productos */
+.grid-productos .card-img-top {
+    height: 130px;
+    object-fit: cover;
+}
+
+.pasos-container {
+    position: relative;
+}
+
+/* Línea gris de fondo que atraviesa todos los pasos */
+.pasos-container::before {
+    content: "";
+    position: absolute;
+    top: 18px; /* alinea con el centro del círculo de 36px */
+    left: 5%;
+    right: 5%;
+    height: 3px;
+    background-color: #e0e0e0;
+    z-index: 1;
+}
+
+.paso-seguimiento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.circulo-paso {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    color: var(--gris-medio);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+/* Paso ya alcanzado por el pedido: se pinta de verde */
+.paso-seguimiento.completado .circulo-paso {
+    background-color: var(--verde-esmeralda);
+    color: white;
+}
+
+.paso-seguimiento.completado p {
+    color: var(--gris-oscuro);
+    font-weight: 600;
+}
+
+.avatar-circle {
+    width: 90px;
+    height: 90px;
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+.card-perfil-resumen {
+    border-radius: 12px;
+}
+.grid-productos .card{
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.grid-productos .card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+    border-color: var(--verde-esmeralda, #198754);
+}
+.grid-productos .card-img-top {
+    height: 180px;
+    object-fit: cover;
+}
+
+.tarjeta-producto .card-text.fw-semibold {
+    margin-top: auto;
+    margin-bottom: 0.75rem;
+    color: var(--verde-esmeralda);
+}
+
+#buscador-productos:focus {
+    border-color: var(--verde-esmeralda);
+    box-shadow: 0 0 0 0.2rem rgba(46, 139, 87, 0.25);
+}
+
+.btn-group.flex-wrap .btn{
+    margin-bottom: 0.4rem;
+}
+
+.input-cantidad {
+  max-width: 80px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+#tabla-carrito tr:hover{
+    background-color: rgba(46, 139, 87, 0.05); 
+    transition: background-color 0.2s ease-in-out;
+
+}
+
+#total-carrito{
+    font-weight: 700;
+    color: #2e8b57; 
+    
+}
+
+.img-carrito{
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #eaeaea;
+
+}
+
+.btn-eliminar{ 
+    width: 35px;
+    height: 35px;
+    padding: 0;
+    display: 	flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-auth {
+    border-radius: 12px;
+}
+
+.nav-pills .nav-link {
+    color: var(--gris-oscuro);
+    font-weight: 600;
+}
+
+.nav-pills .nav-link.active {
+    background-color: var(--verde-esmeralda) !important;
+    color: white !important;
+}
+.img-admin-miniatura {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+body{
+    background-color: #f8f9fa;
+
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(46, 139, 87, 0.05);
+}
