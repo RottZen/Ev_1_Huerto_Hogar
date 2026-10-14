@@ -2,14 +2,16 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useContext } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Inicio from './pages/Inicio';
-import Catalogo from './pages/Catalogo';
-import Carrito from './pages/Carrito';
-import Login from './pages/Login';
-import Registro from './pages/Registro';
-import Admin from './pages/Admin';
-import Perfil from './pages/Perfil';
-import Seguimiento from './pages/Seguimiento';
+import {
+  Inicio,
+  Catalogo,
+  Carrito,
+  Login,
+  Registro,
+  Admin,
+  Perfil,
+  Seguimiento,
+} from './pages';
 import { AuthContext } from './context/AuthContext';
 import './App.css';
 

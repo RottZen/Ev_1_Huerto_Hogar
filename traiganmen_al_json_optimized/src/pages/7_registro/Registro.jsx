@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../../context/AuthContext';
+import Alert from '../../components/Alert';
 import styles from './Registro.module.css';
 
 const Registro = () => {
@@ -96,9 +97,13 @@ const Registro = () => {
         </header>
 
         {serverError && (
-          <div className={styles.errorBanner} role="alert">
-            <span>⚠️</span>
-            <span>{serverError}</span>
+          <div className="mb-3">
+            <Alert
+              type="error"
+              message={serverError}
+              dismissible
+              onClose={() => setServerError('')}
+            />
           </div>
         )}
 

@@ -6,6 +6,7 @@ import { CartContext } from '../context/CartContext';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductCard from '../components/ProductCard';
+import Alert from '../components/Alert';
 
 describe('Reusable Components', () => {
   describe('Navbar Component', () => {
@@ -140,6 +141,25 @@ describe('Reusable Components', () => {
       expect(mockContextAddToCart).toHaveBeenCalledTimes(1);
       expect(mockContextAddToCart).toHaveBeenCalledWith(mockProduct);
       expect(window.alert).toHaveBeenCalledWith('¡Producto agregado al carrito!');
+    });
+  });
+
+  describe('Alert Component', () => {
+    it('renders message and role="alert"', () => {
+      render(<Alert type="success" message="Operación exitosa" />);
+      const alertElem = screen.getByRole('alert');
+      expect(alertElem).toBeInTheDocument();
+      expect(screen.getByText('Operación exitosa')).toBeInTheDocument();
+    });
+
+    it('renders close button and closes when clicked', () => {
+      const handleClose = vi.fn();
+      render(<Alert type="danger" message="Error de prueba" dismissible onClose={handleClose} />);
+      const closeBtn = screen.getByRole('button', { name: /cerrar notificación/i });
+      expect(closeBtn).toBeInTheDocument();
+      fireEvent.click(closeBtn);
+      expect(handleClose).toHaveBeenCalledTimes(1);
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
   });
 });

@@ -1,11 +1,7 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
-import Inicio from '../pages/Inicio';
-import Catalogo from '../pages/Catalogo';
-import Carrito from '../pages/Carrito';
-import Login from '../pages/Login';
-import Admin from '../pages/Admin';
+import { Inicio, Catalogo, Carrito, Login, Admin } from '../pages';
 import { ProductContext } from '../context/ProductContext';
 import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext';

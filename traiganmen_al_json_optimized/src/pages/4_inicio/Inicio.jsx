@@ -6,8 +6,9 @@ import ProductCard from '../../components/ProductCard';
 const Inicio = () => {
   const { products } = useContext(ProductContext);
 
+  // Sort randomly and show only up to 4 products in "Productos destacados"
   const featuredProducts = useMemo(
-    () => [...products].sort((a, b) => String(a.id).localeCompare(String(b.id), 'es', { numeric: true })).slice(0, 4),
+    () => [...products].sort(() => Math.random() - 0.5).slice(0, 4),
     [products],
   );
 
